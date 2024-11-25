@@ -43,7 +43,6 @@ def valid_stable_parameters(alpha: float, sigma: float, beta: float, mu: float) 
     beta_requirement = float_or_int(beta) and (-1 <= beta <= 1)
     sigma_requirement = float_or_int(sigma) and (sigma > 0)
     mu_requirement = float_or_int(mu)
-    
     return alpha_requirement and beta_requirement and sigma_requirement and mu_requirement
 
 
@@ -113,13 +112,13 @@ def stable_distribution_generator(alpha: float, sigma: float, beta: float, mu: f
         raise ValueError("Invalid parameters for the stable distribution.")
 
     # Generate N draws of Z ~ S_alpha(1, beta, 0)
-    z_vector = levy_stable.rvs(alpha, beta, size=n_sample)  
+    z_vector = st.levy_stable.rvs(alpha, beta, size=n_sample)  
 
     # Rescale and shift Z to X
     if alpha != 1:
         return sigma * z_vector + mu  # When alpha != 1
     else:
-        return sigma * z_vector + mu + (2 / math.pi) * beta * sigma * math.log(sigma)  # When alpha == 1
+        return sigma * z_vector + mu + (2 / pi) * beta * sigma * log(sigma)  # When alpha == 1
     
 
 def convert_to_stable_and_sample(alpha: float,P:float,Q:float,drift: float, n_sample: int):
@@ -147,6 +146,7 @@ def stable_density(grid ,alpha: float,sigma: float,beta: float,mu: float):
         else:
             shifted_grid=(grid-mu)/sigma
             return 1/sigma*g((grid-mu)/sigma)
+        
         
 def stable_characteristic_function(grid: np.ndarray ,alpha:float,sigma:float,beta:float,mu:float):
     '''
