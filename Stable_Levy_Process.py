@@ -17,10 +17,10 @@ from scipy.integrate import quad
 import scipy.optimize as so
 import mpmath
 from scipy.special import gamma, gammainc, gammaincc,gammaincinv
-import pandas as pd
 import timeit
 from mpmath import gammainc
 import mpmath as mp
+from Stable import*
 
 
 
@@ -80,6 +80,7 @@ def trajectory_stable_Levy_process_generator(n: int, Delta: float,alpha:float, P
     increments_matrix_add0 = np.hstack([np.zeros((nb_sample,1)),increments_matrix])
     
     return np.cumsum(increments_matrix_add0,axis=1)
+
     
     
     

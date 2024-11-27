@@ -11,12 +11,10 @@ from scipy.integrate import romb, quad, simpson
 import scipy.stats as st
 import matplotlib.pyplot as plt
 from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
-from scipy.special import sici
+from scipy.special import sici,gamma, gammainc, gammaincc,gammaincinv
 from scipy.integrate import quad
 import scipy.optimize as so
 import mpmath
-from scipy.special import gamma, gammainc, gammaincc,gammaincinv
-import pandas as pd
 import timeit
 from mpmath import gammainc
 import mpmath as mp
