@@ -19,8 +19,8 @@ from mpmath import gammainc
 import time
 import mpmath as mp
 from scipy.optimize import brentq
-from Non_Parametric_Fourier_Estimation_Adaptive_Methods import*
-from Stable import*
+from functions import Stable_distribution, Fourier_inversion
+
 
 
 def valid_Tstable_parameters(alpha:float, P:float, Q:float, A:float, B:float)->bool:

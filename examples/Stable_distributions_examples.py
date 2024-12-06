@@ -8,7 +8,8 @@ Created on Thu Nov 21 21:39:53 2024
 import numpy as np
 import matplotlib.pyplot as plt 
 import scipy.stats as st
-from Stable import*
+from functions import Stable_distribution
+
 
 # =============================================================================
 # Histograms and densities with varying 

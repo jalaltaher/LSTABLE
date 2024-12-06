@@ -16,11 +16,12 @@ from scipy.integrate import quad
 import scipy.optimize as so
 import mpmath
 from scipy.special import gamma, gammainc, gammaincc,gammaincinv
-import pandas as pd
 import timeit
 from mpmath import gammainc
 import mpmath as mp
-from Non_Parametric_Fourier_Estimation_Adaptive_Methods import*
+from functions import Fourier_inversion
+
+
 
 
 

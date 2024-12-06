@@ -20,7 +20,8 @@ from scipy.special import gamma, gammainc, gammaincc,gammaincinv
 import timeit
 from mpmath import gammainc
 import mpmath as mp
-from Stable import*
+from functions import Stable_distribution
+
 
 
 

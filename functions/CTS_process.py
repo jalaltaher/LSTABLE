@@ -6,7 +6,7 @@ Created on Thu Dec  5 12:35:07 2024
 """
 
 import numpy as np
-from CTS_distribution import*
+from functions import CTS_distribution
 
 
 

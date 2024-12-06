@@ -9,7 +9,7 @@ Created on Wed Nov 27 23:09:53 2024
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from CTS_distribution import*
+from functions import CTS_distribution 
 import sys
 
 
