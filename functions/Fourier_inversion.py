@@ -8,18 +8,6 @@ Created on Mon Nov 25 22:10:18 2024
 
 import numpy as np
 from scipy.integrate import romb, quad, simpson
-import scipy.stats as st
-import matplotlib.pyplot as plt
-from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
-from scipy.special import sici
-from scipy.integrate import quad
-import scipy.optimize as so
-import mpmath
-from scipy.special import gamma, gammainc, gammaincc,gammaincinv
-import pandas as pd
-import timeit
-from mpmath import gammainc
-import mpmath as mp
 
 
 
@@ -61,24 +49,3 @@ def density_by_fourier_inversion(characteristic_function: np.ndarray,evaluation_
     res=np.real(1/(2*pi)*simpson(integrand_matrix,dx=d_int,axis=1))
     return res*(res>=0)
 
-
-
-# =============================================================================
-# Direct problem
-# =============================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-# =============================================================================
-# Inverse problem
-# =============================================================================

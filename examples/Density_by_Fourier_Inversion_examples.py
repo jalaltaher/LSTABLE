@@ -7,19 +7,10 @@ Created on Tue Nov 26 12:01:32 2024
 
 
 import numpy as np
-from scipy.integrate import romb, quad, simpson
 import scipy.stats as st
 import matplotlib.pyplot as plt
 from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
-from scipy.special import sici
-from scipy.integrate import quad
-import scipy.optimize as so
-import mpmath
-from scipy.special import gamma, gammainc, gammaincc,gammaincinv
-import timeit
-from mpmath import gammainc
-import mpmath as mp
-from functions import Fourier_inversion
+from functions.Fourier_inversion import density_by_fourier_inversion
 
 
 

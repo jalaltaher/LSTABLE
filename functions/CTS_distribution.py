@@ -6,20 +6,13 @@ Created on Wed Nov 27 20:30:26 2024
 """
 
 import numpy as np
-from scipy.integrate import romb, quad, simpson
 import scipy.stats as st
-import matplotlib.pyplot as plt
 from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
-from scipy.special import sici,gamma, gammainc, gammaincc,gammaincinv
 from scipy.integrate import quad
-import scipy.optimize as so
-import mpmath
-import timeit
-from mpmath import gammainc
 import time
-import mpmath as mp
 from scipy.optimize import brentq
-from functions import Stable_distribution, Fourier_inversion
+from functions.Stable_distribution import stable_distribution_generator
+from functions.Fourier_inversion import density_by_fourier_inversion
 
 
 
@@ -367,9 +360,6 @@ def CTS_generator_Bauemer_vectorial(alpha: float ,P: float ,Q: float,A: float,B:
     return res
 
 
-# =============================================================================
-# Compound Poisson approximation + Gaussian approximation of the small jumps
-# =============================================================================
 
 
 

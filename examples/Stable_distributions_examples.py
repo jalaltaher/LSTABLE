@@ -8,7 +8,7 @@ Created on Thu Nov 21 21:39:53 2024
 import numpy as np
 import matplotlib.pyplot as plt 
 import scipy.stats as st
-from functions import Stable_distribution
+from functions.Stable_distribution import stable_distribution_generator,stable_density
 
 
 # =============================================================================
@@ -78,8 +78,8 @@ def plot_stable_density_histogram(alpha: float,sigma:float, beta:float,mu:float,
     
 
 
-# alpha,sigma,beta,mu=1,1.0,0.2,0.0
-# nb_sample=10000
-# plot_grid=np.linspace(-3,3,1000)
-# nb_bins=floor(sqrt(nb_sample))
-# plot_stable_density_histogram(alpha,sigma,beta,mu,nb_sample, plot_grid, nb_bins)
+alpha,sigma,beta,mu=1,1.0,0.2,0.0
+nb_sample=10000
+plot_grid=np.linspace(-3,3,1000)
+nb_bins=floor(sqrt(nb_sample))
+plot_stable_density_histogram(alpha,sigma,beta,mu,nb_sample, plot_grid, nb_bins)
