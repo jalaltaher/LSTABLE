@@ -39,13 +39,13 @@ The following examples demonstrate how to check the validity of the stable param
 ```python
 # Check the validity of stable parameters
 valid_stable_parameters(
-	alpha, sigma, beta, mu
-	)
+	  alpha, sigma, beta, mu
+)
 
 # Convert from (alpha,sigma,beta,mu) to the Lévy parameters (alpha,P,Q,drift) (P,Q are the positive/negative jump parameters of the Lévy measure
-alpha,P,Q = stable_to_levy_parameter(
-	alpha, P, Q, drift
-	)
+alpha, P, Q = stable_to_levy_parameter(
+	  alpha, P, Q, drift
+)
 ```
 
 ### Sampling stable distribution
@@ -55,22 +55,22 @@ The following example demonstrates how to sample an $S_\alpha(\sigma,\beta,\mu)$
 ```python
 
 # Parameters
-alpha= 1.5 #stability index
-sigma= 2.0 #
-beta= 0.5 #
-mu= 0.0 # 
-n_sample=10000 # length of the sample
+alpha = 1.5  # stability index
+sigma = 2.0
+beta = 0.5
+mu = 0.0
+n_sample = 10000 # length of the sample
 
 sample = stable_distribution_generator(
-	alpha, sigma, beta, mu, n_sample
-	)
+    alpha, sigma, beta, mu, n_sample
+)
 
 
 # Compute the density
-grid= np.linspace(-7,7,1000)
+grid = np.linspace(-7, 7, 1000)
 density = stable_density(
-	grid ,alpha , sigma, beta, mu
-	)
+	  grid ,alpha , sigma, beta, mu
+)
 ```
 
 #### Output Figure
@@ -86,10 +86,10 @@ density = stable_density(
 The following example demonstrates how to compute the characteristic function of $S_\alpha(\sigma,\beta,\mu)$
 
 ```python
-grid = np.linspace(-10,10,1000)
-cf_stable= stable_characteristic_function(
-	grid, alpha ,sigma ,beta , mu
-	)
+grid = np.linspace(-10, 10, 1000)
+cf_stable = stable_characteristic_function(
+	  grid, alpha ,sigma ,beta, mu
+)
 ```
 #### Output Figure
 
@@ -106,17 +106,17 @@ The following example demonstrates how to sample an $\alpha-$stable Lévy proces
 $$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}{x<0}$$
 
 ```python
-#Lévy parameters
-P,Q= 2,1
-drift=0.0
+# Lévy parameters
+P, Q = 2,1
+drift = 0.0
 
-n = 10000 #number of observation
-Delta= 0.0001 #observation rate
-time_grid = np.linspace(Delta,n*Delta,n)
+n = 10000  # number of observation
+Delta = 0.0001  # observation rate
+time_grid = np.linspace(Delta, n*Delta, n)
 nb_sample = 1
 
-#increments generation
-increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0] #increment is of shape (nb_sample,n)
+# increments generation
+increments = increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0] #increment is of shape (nb_sample,n)
 ```
 #### Output Figure
 
@@ -129,16 +129,16 @@ increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, 
 
 
 ```python
-#Lévy parameters
-P,Q= 2,1
-drift=0.0
+# Lévy parameters
+P, Q = 2, 1
+drift = 0.0
 
-n = 10000 #number of observation
-Delta= 0.0001 #observation rate
-time_grid = np.linspace(0,n*Delta,n+1)
+n = 10000  # number of observation
+Delta = 0.0001  # observation rate
+time_grid = np.linspace(0, n*Delta, n+1)
 nb_sample = 10
 
-#trajectory generation
+# trajectory generation
 trajectories = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
 ```
 
@@ -157,27 +157,44 @@ The following example demonstrates how to sample a Classical Tempered Stable Lé
 $$\nu(dx) = Pe^{-Ax}x^{-1-\alpha} \mathbb{1}_{x>0} + Qe^{-Bx}|x|^{-1-\alpha} \mathbb{1}{x<0}$$
 
 ```python
-#Parameter
+# Parameter
 n_increments,Delta = 1000,0.001
-alpha= 0.5 #1.5
-P,Q=2,1
-A,B=1,1
-drift=0
-c=1 #approximation parameter when $\alpha>=1$
+alpha = 0.5  # 1.5
+P,Q = 2,1
+A,B = 1,1
+drift = 0
+c = 1  # approximation parameter when $\alpha>=1$
 
-#increments generation
+# increments generation
 increments= increments_CTS_generator(
-    n_increment, Delta, alpha, 
-    P, Q, A, B, drift, 
-    c, verbose=False)
+    n_increment,
+    Delta,
+    alpha, 
+    P,
+    Q,
+    A,
+    B,
+    drift, 
+    c,
+    verbose=False
+)
 
 
 #trajectory generation
 n_trajectories=5
 trajectory_matrix=trajectory_CTS_generator(
-    n_increment, n_trajectories, Delta, alpha, 
-    P, Q, A, B, drift, 
-    c, verbose=False)
+    n_increment,
+    n_trajectories,
+    Delta,
+    alpha, 
+    P,
+    Q,
+    A,
+    B,
+    drift, 
+    c,
+    verbose=False
+)
 ```
 
 - **CTS Lévy process increments**:  
@@ -191,3 +208,11 @@ trajectory_matrix=trajectory_CTS_generator(
   ![alpha=015](./figures/CTS_trajectory_alpha15.png)
   
   *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+
+## Development
+
+### formating
+use black to format your files
+```bash
+poetry run black .
+```

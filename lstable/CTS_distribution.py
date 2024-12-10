@@ -7,7 +7,7 @@ Created on Wed Nov 27 20:30:26 2024
 
 import numpy as np
 import scipy.stats as st
-from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
+from math import cos, gamma, pi, log, tan, sin, floor, exp, ceil, sqrt
 from scipy.integrate import quad
 import time
 from scipy.optimize import brentq
@@ -15,11 +15,10 @@ from functions.Stable_distribution import stable_distribution_generator
 from functions.Fourier_inversion import density_by_fourier_inversion
 
 
-
-def valid_Tstable_parameters(alpha:float, P:float, Q:float, A:float, B:float)->bool:
-    '''
+def valid_Tstable_parameters(alpha: float, P: float, Q: float, A: float, B: float) -> bool:
+    """
     Checks if the parameters are in a valid domain for CTS distributions.
-    
+
     Parameters
     ----------
     alpha : float
@@ -42,22 +41,24 @@ def valid_Tstable_parameters(alpha:float, P:float, Q:float, A:float, B:float)->b
     bool
         return True if the parameter are valid
 
-    '''
+    """
     if not (0 < alpha <= 2):
         raise ValueError("alpha must satisfy 0 < alpha <= 2.")
     if P < 0 or Q < 0 or A < 0 or B < 0:
         raise ValueError("P, Q, A, and B must be non-negative.")
-    if P==0 and Q==0:
+    if P == 0 and Q == 0:
         raise ValueError("P or Q must be positive.")
-    if A==0 and B==0:
+    if A == 0 and B == 0:
         raise ValueError("There is no tempering it is a stable distribution.")
+
+
 # =============================================================================
 # Tempered stable density via Fourier inversion
 # =============================================================================
 
 
-def CTS_characteristic_function(grid: np.ndarray,alpha:float,P:float,Q:float,A:float,B:float)->np.ndarray:
-    '''
+def CTS_characteristic_function(grid: np.ndarray, alpha: float, P: float, Q: float, A: float, B: float) -> np.ndarray:
+    """
     Computes the characteristic function of a CTS process at time Delta
 
     Parameters
@@ -81,39 +82,45 @@ def CTS_characteristic_function(grid: np.ndarray,alpha:float,P:float,Q:float,A:f
     res : np.ndarray
         array with an evaluation of the characteristic function of CTS distribution
 
-    '''
-    
+    """
+
     # Input validation
     valid_Tstable_parameters(alpha, P, Q, A, B)
-        
-    
+
     # Initialization the result
-    u=grid
-    res=np.ones_like(u, dtype=np.complex128)
-    if alpha!=1:
+    u = grid
+    res = np.ones_like(u, dtype=np.complex128)
+    if alpha != 1:
         # Prior computation
-        gamma_alpha= gamma(-alpha)
-        
+        gamma_alpha = gamma(-alpha)
+
         if P > 0:
-            term_P = (A - 1.j * u) ** alpha - A ** alpha + 1.j * u * alpha * A ** (alpha - 1)
+            term_P = (A - 1.0j * u) ** alpha - A**alpha + 1.0j * u * alpha * A ** (alpha - 1)
             res *= np.exp(P * gamma_alpha * term_P)
         if Q > 0:
-            term_Q = (B + 1.j * u) ** alpha - B ** alpha - 1.j * u * alpha * B ** (alpha - 1)
-            res *= np.exp(Q * gamma_alpha * term_Q)   
-    else: 
+            term_Q = (B + 1.0j * u) ** alpha - B**alpha - 1.0j * u * alpha * B ** (alpha - 1)
+            res *= np.exp(Q * gamma_alpha * term_Q)
+    else:
         if P > 0:
-            term_P = P*(A - 1.j * u) * np.log(1 - 1.j*u/A) 
+            term_P = P * (A - 1.0j * u) * np.log(1 - 1.0j * u / A)
             res *= np.exp(term_P)
         if Q > 0:
-            term_Q = (B + 1.j * u) ** alpha - B ** alpha - 1.j * u * alpha * B ** (alpha - 1)
+            term_Q = (B + 1.0j * u) ** alpha - B**alpha - 1.0j * u * alpha * B ** (alpha - 1)
             res *= np.exp(term_Q)
-        res*=np.exp(1.j*u*(P-Q))
+        res *= np.exp(1.0j * u * (P - Q))
     return res
 
 
 def adaptive_integration_bound_for_CTS_Fourier_inverse(
-    alpha: float, P: float, Q: float, A: float, B: float,
-    epsilon: float = 0.01, x_min: float = 0, x_max: float = 1e5, verbose: bool = False
+    alpha: float,
+    P: float,
+    Q: float,
+    A: float,
+    B: float,
+    epsilon: float = 0.01,
+    x_min: float = 0,
+    x_max: float = 1e5,
+    verbose: bool = False,
 ) -> float:
     """
     Finds the root of the equation |CTS_characteristic_function(u)| = epsilon
@@ -173,13 +180,21 @@ def adaptive_integration_bound_for_CTS_Fourier_inverse(
             print(f"No root found in the interval [{x_min}, {x_max}]: {e}")
         return None
 
+
 def CTS_density(
-    grid: np.ndarray, alpha: float, P: float, Q: float, A: float, B: float,
-    adaptive_bound: bool = False, integration_step: float = 0.01, integration_grid: np.ndarray = None
+    grid: np.ndarray,
+    alpha: float,
+    P: float,
+    Q: float,
+    A: float,
+    B: float,
+    adaptive_bound: bool = False,
+    integration_step: float = 0.01,
+    integration_grid: np.ndarray = None,
 ) -> np.ndarray:
-    ''' 
-    Computes the density of the CTS distribution by Fourier inversion of the characteristic function. 
-    If adaptive_bound=True, it uses an adaptive integration bound. 
+    """
+    Computes the density of the CTS distribution by Fourier inversion of the characteristic function.
+    If adaptive_bound=True, it uses an adaptive integration bound.
     If adaptive_bound is False, it uses the provided integration grid.
 
     Parameters
@@ -207,7 +222,7 @@ def CTS_density(
     -------
     np.ndarray
         Array representing the computed density.
-    '''
+    """
     # Validate parameters (custom validation function or use if already defined)
     valid_Tstable_parameters(alpha, P, Q, A, B)
 
@@ -215,7 +230,7 @@ def CTS_density(
     if adaptive_bound:
         integration_bound = adaptive_integration_bound_for_CTS_Fourier_inverse(alpha, P, Q, A, B)
         integration_grid = np.arange(-integration_bound, integration_bound, integration_step)
-    
+
     # Ensure integration_grid is defined
     if integration_grid is None:
         raise ValueError("integration_grid must be provided or adaptive_bound must be True")
@@ -231,6 +246,7 @@ def CTS_density(
         return None
 
     return res
+
 
 # =============================================================================
 # Bauemer algorithm
@@ -251,14 +267,12 @@ def seconds_to_hms(total_seconds):
     return hours, minutes, seconds
 
 
-
-
-def totally_skewed_CTS_generator_Bauemer(alpha: float ,P: float ,A: float,c: float= 0):
-    '''
+def totally_skewed_CTS_generator_Bauemer(alpha: float, P: float, A: float, c: float = 0):
+    """
     Samples a totally positively skewed tempered stable random variable.
     when alpha>1 the algorithm approximates with the introduction of the parameter $c$
     the higher $c$ the better the approximation but the slower is the acceptance rate
-    
+
     Parameters
     ----------
     alpha : float
@@ -269,19 +283,20 @@ def totally_skewed_CTS_generator_Bauemer(alpha: float ,P: float ,A: float,c: flo
         Positive jump tempering parameter (A >= 0).
     c: float
         Approximation parameter (c>=0)
-    
-    '''
-    U=st.uniform().rvs(1)
-    sigma=(P*gamma(1-alpha)/alpha*cos(pi*alpha/2))**(1/alpha)
-    S=stable_distribution_generator(alpha,sigma,1,0,1)[0]
-    c=c*(alpha>=1) #if alpha<1 no need to introduce c, the sampling is exact
-    while(U>exp(-A*(S+c))):
-        U=st.uniform().rvs(1)
-        S=stable_distribution_generator(alpha,sigma,1,0,1)[0]
-    return S -P*gamma(1-alpha)*A**(alpha-1)
 
-def CTS_generator_Bauemer(alpha: float ,P: float ,Q: float,A: float,B: float, c: float= 0):
-    '''
+    """
+    U = st.uniform().rvs(1)
+    sigma = (P * gamma(1 - alpha) / alpha * cos(pi * alpha / 2)) ** (1 / alpha)
+    S = stable_distribution_generator(alpha, sigma, 1, 0, 1)[0]
+    c = c * (alpha >= 1)  # if alpha<1 no need to introduce c, the sampling is exact
+    while U > exp(-A * (S + c)):
+        U = st.uniform().rvs(1)
+        S = stable_distribution_generator(alpha, sigma, 1, 0, 1)[0]
+    return S - P * gamma(1 - alpha) * A ** (alpha - 1)
+
+
+def CTS_generator_Bauemer(alpha: float, P: float, Q: float, A: float, B: float, c: float = 0):
+    """
     Sample a bilateral tempered stable random variable.
     when alpha>1 the algorithm approximates with the introduction of the parameter $c$
     the higher $c$ the better the approximation but the slower is the acceptance rate
@@ -304,17 +319,19 @@ def CTS_generator_Bauemer(alpha: float ,P: float ,Q: float,A: float,B: float, c:
     Returns
     -------
     float
-      
-    '''
-    Y_plus,Y_minus=0,0
-    if P>0:
-        Y_plus=totally_skewed_CTS_generator_Bauemer(alpha,P,A,c)
-    if Q>0:
-        Y_minus=totally_skewed_CTS_generator_Bauemer(alpha,Q,B,c)
+
+    """
+    Y_plus, Y_minus = 0, 0
+    if P > 0:
+        Y_plus = totally_skewed_CTS_generator_Bauemer(alpha, P, A, c)
+    if Q > 0:
+        Y_minus = totally_skewed_CTS_generator_Bauemer(alpha, Q, B, c)
     return Y_plus - Y_minus
 
 
-def CTS_generator_Bauemer_vectorial(alpha: float ,P: float ,Q: float,A: float,B: float,n_sample: int, c: float= 0,verbose: bool = False):
+def CTS_generator_Bauemer_vectorial(
+    alpha: float, P: float, Q: float, A: float, B: float, n_sample: int, c: float = 0, verbose: bool = False
+):
     """
     Vectorial version of the CTS generator
 
@@ -340,21 +357,21 @@ def CTS_generator_Bauemer_vectorial(alpha: float ,P: float ,Q: float,A: float,B:
     Returns
     -------
     res : np.ndarray
-        
+
 
     """
-    res=np.zeros(n_sample)
-    execution_time=0
+    res = np.zeros(n_sample)
+    execution_time = 0
     for i in range(n_sample):
-        start=time.time()
-        res[i]=CTS_generator_Bauemer(alpha,P,Q,A,B,c)
-        end=time.time()
-        execution_time+= end-start
+        start = time.time()
+        res[i] = CTS_generator_Bauemer(alpha, P, Q, A, B, c)
+        end = time.time()
+        execution_time += end - start
         if verbose:
-            mean_time_per_loop= execution_time/(i+1)
-            expected_seconds_left=mean_time_per_loop*(n_sample-i+1)
-            hours,minutes,seconds=seconds_to_hms(expected_seconds_left)
-            #print('sample: {}/{}'.format(i+1,n_sample),end='\r')
-            print('estimated time left: {}h:{}m:{}s'.format(int(hours),int(minutes),int(seconds)))  
+            mean_time_per_loop = execution_time / (i + 1)
+            expected_seconds_left = mean_time_per_loop * (n_sample - i + 1)
+            hours, minutes, seconds = seconds_to_hms(expected_seconds_left)
+            # print('sample: {}/{}'.format(i+1,n_sample),end='\r')
+            print("estimated time left: {}h:{}m:{}s".format(int(hours), int(minutes), int(seconds)))
 
     return res
