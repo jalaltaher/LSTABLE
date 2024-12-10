@@ -67,7 +67,7 @@ density = stable_density(
   ![alpha=0.5](./figures/stable_hist_density_alpha05.png)
   ![alpha=1.5](./figures/stable_hist_density_alpha15.png)
   
-  *This figure visualizes a histogram of a sample of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
+  *This figure visualizes a histogram of 10000 values of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
 
 
 
