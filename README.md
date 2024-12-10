@@ -93,8 +93,15 @@ cf_stable= stable_characteristic_function(
 ```
 #### Output Figure
 
-- **Sample Stable Distributions**:  
+- **Stable characteristic function**:  
   ![alpha=0.5](./figures/stable_cf_alpha05.png)
   ![alpha=1.5](./figures/stable_cf_alpha15.png)
   
-  *This figure visualizes a histogram of 10000 values of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
+  *This figure visualizes the real, imaginary part and the modulus of the characteristic function of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5. *
+
+
+### $\alpha-$stable Lévy process
+
+The following example demonstrates how to sample an $\alpha-$stable Lévy process with triplet (drift,0,$\nu$) an where 
+$\nu = Px^{-1-\alpha} \mathbb{1}_{x>0}$
+
