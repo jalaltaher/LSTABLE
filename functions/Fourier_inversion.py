@@ -8,6 +8,7 @@ Created on Mon Nov 25 22:10:18 2024
 
 import numpy as np
 from scipy.integrate import romb, quad, simpson
+from math import pi
 
 
 

@@ -41,6 +41,16 @@ def valid_stable_parameters(alpha: float, sigma: float, beta: float, mu: float) 
     beta_requirement = float_or_int(beta) and (-1 <= beta <= 1)
     sigma_requirement = float_or_int(sigma) and (sigma > 0)
     mu_requirement = float_or_int(mu)
+    
+    if not (0 < alpha < 2):
+        raise ValueError("alpha must be in the range (0, 2).")
+    if alpha==2:
+        raise ValueError("Generate a gaussian random variable directly")
+    if not (-1<=beta <=1):
+        raise ValueError("beta must be in the range [-1,1]")
+    if not (sigma>0):
+        raise ValueError("sigma must be positive")
+
     return alpha_requirement and beta_requirement and sigma_requirement and mu_requirement
 
 
@@ -123,6 +133,7 @@ def convert_to_stable_and_sample(alpha: float,P:float,Q:float,drift: float, n_sa
     '''
     Generate an n sample from a infinite divisible distribution of levy triplet (drift,0,nu) where 
     nu is the stable Levy measure of parameter alpha,P,Q
+    
     '''
     # Convert the Levy parameters
     alpha,sigma,beta,mu = stable_to_levy_parameter(alpha, P, Q, drift)
@@ -192,3 +203,4 @@ def support_density(alpha:float,sigma:float,beta:float,mu:float):
    
     # General case
     return float("-inf"), float("inf")
+

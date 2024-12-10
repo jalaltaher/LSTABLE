@@ -83,7 +83,7 @@ drift=0
 alpha=0.5
 nb_sample=1
 time_grid=np.linspace(Delta,n*Delta,n)
-increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0]
+increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
 plt.figure()
 plt.plot(time_grid,increments)
 plt.show()

@@ -24,7 +24,7 @@ def increments_CTS_generator(
         P, Q, A, B (float): Parameters of the CTS process.
         drift (float): Drift coefficient.
         c (float, optional): Additional parameter, default is 0.
-        verbose (bool, optional): Verbose output, default is False.
+        verbose (bool, optional): Verbose output giving time remaining, default is False.
         
     Returns:
         np.ndarray: Array of shape (n_increments,) representing the increments.
@@ -52,7 +52,7 @@ def trajectory_CTS_generator(
         P, Q, A, B (float): Parameters of the CTS process.
         drift (float): Drift coefficient.
         c (float, optional): Additional parameter, default is 0.
-        verbose (bool, optional): Verbose output, default is False.
+        verbose (bool, optional): Verbose output giving time remaining, default is False.
 
     Returns:
         np.ndarray: Array of shape (n_trajectories, n_increments + 1)
@@ -74,10 +74,35 @@ def trajectory_CTS_generator(
         return res[0]
     return res
 
-n_increment, Delta=10000,0.001
-n_trajectories=2
+#increments
+n_increment, Delta=1000,0.001
 c=1
-alpha,P,Q,A,B,drift=1.5,1,0,1,1,0
+
+alpha,P,Q,A,B,drift=0.5,2,1,1,1,0
+time_grid=np.linspace(0,n_increment*Delta,n_increment)
+increments= increments_CTS_generator(
+    n_increment, Delta, alpha, 
+    P, Q, A, B, drift, 
+    0, verbose=True)
+plt.figure()
+plt.plot(time_grid,increments)
+plt.show()
+
+alpha=1.5
+time_grid=np.linspace(Delta,n_increment*Delta,n_increment)
+increments= increments_CTS_generator(
+    n_increment, Delta, alpha, 
+    P, Q, A, B, drift, 
+    c, verbose=True)
+plt.figure()
+plt.plot(time_grid,increments)
+plt.show()
+
+#trajectories
+n_increment, Delta=1000,0.001
+n_trajectories=5
+c=1
+alpha,P,Q,A,B,drift=0.5,2,1,1,1,0
 time_grid=np.linspace(0,n_increment*Delta,n_increment+1)
 trajectory_matrix=trajectory_CTS_generator(
     n_increment, n_trajectories, Delta, alpha, 
@@ -85,5 +110,20 @@ trajectory_matrix=trajectory_CTS_generator(
     c, verbose=True)
 
 plt.figure()
-plt.plot(time_grid,trajectory_matrix.T,"o",markersize=2)
+plt.plot(time_grid,trajectory_matrix.T)
+plt.show()
+
+
+n_increment, Delta=1000,0.001
+n_trajectories=5
+c=1
+alpha,P,Q,A,B,drift=1.5,2,1,1,1,0
+time_grid=np.linspace(0,n_increment*Delta,n_increment+1)
+trajectory_matrix=trajectory_CTS_generator(
+    n_increment, n_trajectories, Delta, alpha, 
+    P, Q, A, B, drift, 
+    c, verbose=True)
+
+plt.figure()
+plt.plot(time_grid,trajectory_matrix.T)
 plt.show()
