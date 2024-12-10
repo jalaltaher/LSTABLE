@@ -43,7 +43,7 @@ valid_stable_parameters(
 	)
 
 # Convert from (alpha,sigma,beta,mu) to the Lévy parameters (alpha,P,Q,drift) (P,Q are the positive/negative jump parameters of the Lévy measure
-alpha,P,Q= stable_to_levy_parameter(
+alpha,P,Q = stable_to_levy_parameter(
 	alpha, P, Q, drift
 	)
 ```
