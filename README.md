@@ -1,6 +1,6 @@
 # LSTABLE library
 
-LSTABLE is a Python library designed to sample trajectories and calculate theoretical features (density,characteristic function...) and display
+LSTABLE is a Python library designed to sample trajectories calculate theoretical features (density, characteristic function...), and display
 - Stable distributions.
 - $\alpha-$stable Lévy process.
 - Classical Tempered Stable (CTS) Lévy processes.
@@ -150,3 +150,44 @@ trajectories = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, dr
   
   *This figure visualizes 10 trajectories of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
 
+
+### Classical Tempered Stable process via Bauemer-Merschaert algorithm.
+
+The following example demonstrates how to sample a Classical Tempered Stable Lévy process with the triplet (drift,0,$\tilde{\nu}$) and where 
+$$\nu(dx) = Pe^{-Ax}x^{-1-\alpha} \mathbb{1}_{x>0} + Qe^{-Bx}|x|^{-1-\alpha} \mathbb{1}{x<0}$$
+
+```python
+#Parameter
+n_increments,Delta = 1000,0.001
+alpha= 0.5 #1.5
+P,Q=2,1
+A,B=1,1
+drift=0
+c=1 #approximation parameter when $\alpha>=1$
+
+#increments generation
+increments= increments_CTS_generator(
+    n_increment, Delta, alpha, 
+    P, Q, A, B, drift, 
+    c, verbose=False)
+
+
+#trajectory generation
+n_trajectories=5
+trajectory_matrix=trajectory_CTS_generator(
+    n_increment, n_trajectories, Delta, alpha, 
+    P, Q, A, B, drift, 
+    c, verbose=False)
+```
+
+- **CTS Lévy process increments**:  
+  ![alpha=0.5](./figures/CTS_increments_alpha05.png)
+  ![alpha=015](./figures/CTS_increments_alpha15.png)
+  
+  *This figure visualizes increments of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+  
+- **CTS Lévy process trajectories**:  
+  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
+  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
+  
+  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
