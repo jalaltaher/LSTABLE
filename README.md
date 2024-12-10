@@ -12,6 +12,8 @@ LSTABLE is a Python library designed to sample trajectories and calculate theore
 ```bash
 pip install LSTABLE
 
+```
+
 
 ## Code Environment
 
@@ -27,7 +29,7 @@ Install the required dependencies using the following command:
 
 ```bash
 pip install numpy matplotlib scipy
-
+```
 
 ## Examples
 
