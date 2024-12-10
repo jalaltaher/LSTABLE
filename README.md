@@ -41,10 +41,10 @@ The following example demonstrates how to sample an $S_\alpha(\sigma,\beta,\mu)$
 
 # Parameters
 alpha= 1.5 #stability index
-sigma= 1 #
-beta= 1.5 #
-mu= 0 # 
-n_sample=1000 #lenght of the sample
+sigma= 2.0 #
+beta= 0.5 #
+mu= 0.0 # 
+n_sample=10000 # length of the sample
 
 sample = stable_distribution_generator(
 	alpha, sigma, beta, mu, n_sample
@@ -52,7 +52,7 @@ sample = stable_distribution_generator(
 
 
 # Compute the density
-grid= np.linspace(-10,10,1E5)
+grid= np.linspace(-7,7,1000)
 density = stable_density(
 	grid ,alpha , sigma, beta, mu
 	)
@@ -61,8 +61,10 @@ density = stable_density(
 ### Output Figure
 
 - **Sample Stable Distributions**:  
-  ![Example](./figures/stable_hist_density_alpha05.png)  
-  *This figure visualizes a histogram of a sample of $S_\alpha(\sigma,\beta,\mu)$ and the corresponding density function computed using a Fourier Inverse formula.*
+  ![Example](./figures/stable_hist_density_alpha05.png)
+  ![Example](./figures/stable_hist_density_alpha1.png)
+  ![Example](./figures/stable_hist_density_alpha15.png)
+  *This figure visualizes a histogram of a sample of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
 
 
 
