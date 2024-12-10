@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
 from math import pi, log
-from functions.Stable_distribution import stable_to_levy_parameter
+from .Stable_distribution import stable_to_levy_parameter
 
 
 def increment_stable_levy_process_generator(

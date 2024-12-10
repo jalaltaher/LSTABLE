@@ -11,8 +11,8 @@ from math import cos, gamma, pi, log, tan, sin, floor, exp, ceil, sqrt
 from scipy.integrate import quad
 import time
 from scipy.optimize import brentq
-from functions.Stable_distribution import stable_distribution_generator
-from functions.Fourier_inversion import density_by_fourier_inversion
+from .Stable_distribution import stable_distribution_generator
+from .Fourier_inversion import density_by_fourier_inversion
 
 
 def valid_Tstable_parameters(alpha: float, P: float, Q: float, A: float, B: float) -> bool:

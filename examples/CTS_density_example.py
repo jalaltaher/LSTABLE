@@ -9,7 +9,7 @@ Created on Wed Nov 27 23:09:53 2024
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from functions.CTS_distribution import CTS_density, CTS_generator_Bauemer_vectorial
+from lstable.CTS_distribution import CTS_density, CTS_generator_Bauemer_vectorial
 import sys
 
 
