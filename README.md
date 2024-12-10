@@ -34,7 +34,7 @@ pip install numpy matplotlib scipy
 
 ### Stable Parameters 
 
-The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters 
+The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters (drift,0,$\nu$) where $\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}_{x>0}.$
 
 ```python
 # Check validity of stable parameters
@@ -103,5 +103,5 @@ cf_stable= stable_characteristic_function(
 ### $\alpha-$stable Lévy process
 
 The following example demonstrates how to sample an $\alpha-$stable Lévy process with triplet (drift,0,$\nu$) an where 
-$\nu = Px^{-1-\alpha} \mathbb{1}_{x>0}$
+$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}_{x>0}.$
 
