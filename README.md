@@ -73,7 +73,7 @@ density = stable_density(
 	)
 ```
 
-### Output Figure
+#### Output Figure
 
 - **Sample Stable Distributions**:  
   ![alpha=0.5](./figures/stable_hist_density_alpha05.png)
@@ -81,5 +81,20 @@ density = stable_density(
   
   *This figure visualizes a histogram of 10000 values of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
 
+### Characteristic functions
 
+The following example demonstrates how to compute the characteristic function of $S_\alpha(\sigma,\beta,\mu)$
 
+```python
+grid =
+cf_stable= stable_characteristic_function(
+	grid, alpha ,sigma ,beta , mu
+	)
+```
+#### Output Figure
+
+- **Sample Stable Distributions**:  
+  ![alpha=0.5](./figures/stable_cf_alpha05.png)
+  ![alpha=1.5](./figures/stable_cf_alpha15.png)
+  
+  *This figure visualizes a histogram of 10000 values of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5 and the corresponding density function computed using a Fourier Inverse formula.*
