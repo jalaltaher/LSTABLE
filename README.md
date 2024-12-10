@@ -36,6 +36,18 @@ pip install numpy matplotlib scipy
 
 The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters 
 
+```python
+# Check validity of stable parameters
+valid_stable_parameters(
+	alpha, sigma, beta, mu
+	)
+
+# Convert from (alpha,sigma,beta,mu) to the Lévy parameters (alpha,P,Q,drift) (P,Q are the positive/negative jump parameters of the Lévy measure
+alpha,P,Q= stable_to_levy_parameter(
+	alpha, P, Q, drift
+	)
+```
+
 ### Sampling stable distribution
 
 The following example demonstrates how to sample an $S_\alpha(\sigma,\beta,\mu)$
