@@ -86,7 +86,7 @@ density = stable_density(
 The following example demonstrates how to compute the characteristic function of $S_\alpha(\sigma,\beta,\mu)$
 
 ```python
-grid =
+grid = np.linspace(-10,10,1000)
 cf_stable= stable_characteristic_function(
 	grid, alpha ,sigma ,beta , mu
 	)
@@ -104,4 +104,49 @@ cf_stable= stable_characteristic_function(
 
 The following example demonstrates how to sample an $\alpha-$stable Lévy process with triplet (drift,0,$\nu$) an where 
 $$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}{x<0}$$
+
+```python
+#Lévy parameters
+P,Q= 2,1
+drift=0.0
+
+n = 10000 #number of observation
+Delta= 0.0001 #observation rate
+time_grid = np.linspace(Delta,n*Delta,n)
+nb_sample = 1
+
+#increments generation
+increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0] #increment is of shape (nb_sample,n)
+```
+#### Output Figure
+
+- **$\alpha-$stable Lévy process increments**:  
+  ![alpha=0.5](./figures/stable_increments_alpha05.png)
+  ![alpha=015](./figures/stable_increments_alpha15.png)
+  
+  *This figure visualizes the increments of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
+
+
+
+```python
+#Lévy parameters
+P,Q= 2,1
+drift=0.0
+
+n = 10000 #number of observation
+Delta= 0.0001 #observation rate
+time_grid = np.linspace(0,n*Delta,n+1)
+nb_sample = 10
+
+#trajectory generation
+trajectories = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
+```
+
+#### Output Figure
+
+- **$\alpha-$stable Lévy process trajectories**:  
+  ![alpha=0.5](./figures/stable_trajectories_alpha05.png)
+  ![alpha=015](./figures/stable_trajectories_alpha15.png)
+  
+  *This figure visualizes 10 trajectories of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
 
