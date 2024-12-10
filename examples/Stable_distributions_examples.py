@@ -7,6 +7,7 @@ Created on Thu Nov 21 21:39:53 2024
 
 import numpy as np
 import matplotlib.pyplot as plt 
+from math import floor,sqrt
 import scipy.stats as st
 from functions.Stable_distribution import stable_distribution_generator,stable_density
 
@@ -73,13 +74,13 @@ def plot_stable_density_histogram(alpha: float,sigma:float, beta:float,mu:float,
     if histogram==True:
         sample_array=stable_distribution_generator(alpha, sigma, beta, mu, nb_sample)
         values,bins=histogram_zoom(sample_array, minimum_bound,maximum_bound,nb_bins)
-        plt.stairs(values,bins)
+        plt.stairs(values,bins,color='red')
     plt.show()
     
 
 
-alpha,sigma,beta,mu=1,1.0,0.2,0.0
+alpha,sigma,beta,mu=1.5,1.0,0.5,0
 nb_sample=10000
-plot_grid=np.linspace(-3,3,1000)
-nb_bins=floor(sqrt(nb_sample))
+plot_grid=np.linspace(-5,5,1000)
+nb_bins=50
 plot_stable_density_histogram(alpha,sigma,beta,mu,nb_sample, plot_grid, nb_bins)
