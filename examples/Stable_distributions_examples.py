@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import floor, sqrt
 import scipy.stats as st
-from functions.Stable_distribution import stable_distribution_generator, stable_density, stable_characteristic_function
+from lstable.Stable_distribution import stable_distribution_generator, stable_density, stable_characteristic_function
 
 
 # =============================================================================

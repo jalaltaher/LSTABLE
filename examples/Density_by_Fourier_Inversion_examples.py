@@ -10,7 +10,7 @@ import numpy as np
 import scipy.stats as st
 import matplotlib.pyplot as plt
 from math import cos, gamma, pi, log, tan, sin, floor, exp, ceil, sqrt
-from functions.Fourier_inversion import density_by_fourier_inversion
+from lstable.Fourier_inversion import density_by_fourier_inversion
 
 
 # =============================================================================
