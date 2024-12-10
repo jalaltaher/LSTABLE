@@ -54,7 +54,7 @@ grid= np.linspace(-10,10,1E5)
 density = stable_density(
 	grid ,alpha , sigma, beta, mu
 	)
-
+```
 
 ### Output Figure
 
