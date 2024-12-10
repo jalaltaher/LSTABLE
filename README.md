@@ -58,8 +58,8 @@ density = stable_density(
 
 ### Output Figure
 
-- **Simulated Lévy Process**:  
-  ![Example Lévy Process Simulation](./examples/levy_process_simulation.png)  
+- **Sample Stable Distributions**:  
+  ![Example](./figures/stable_hist_density_alpha05.png)  
   *This figure visualizes a histogram of a sample of $S_\alpha(\sigma,\beta,\mu)$ and the corresponding density function computed using a Fourier Inverse formula.*
 
 
