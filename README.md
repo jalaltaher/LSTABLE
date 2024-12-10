@@ -4,7 +4,6 @@ LSTABLE is a Python library designed to sample trajectories and calculate theore
 - Stable distributions.
 - $-\alpha$stable Lévy process.
 - Classical Tempered Stable (CTS) Lévy processes.
-
 ---
 
 ## Installation
@@ -32,6 +31,10 @@ pip install numpy matplotlib scipy
 ```
 
 ## Examples
+
+### Stable Parameters 
+
+The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters 
 
 ### Sampling stable distribution
 
