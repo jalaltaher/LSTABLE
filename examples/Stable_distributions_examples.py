@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from math import floor,sqrt
 import scipy.stats as st
-from functions.Stable_distribution import stable_distribution_generator,stable_density
+from functions.Stable_distribution import stable_distribution_generator,stable_density,stable_characteristic_function
 
 
 # =============================================================================
@@ -78,9 +78,30 @@ def plot_stable_density_histogram(alpha: float,sigma:float, beta:float,mu:float,
     plt.show()
     
 
-
-alpha,sigma,beta,mu=1.5,1.0,0.5,0
+# Histogram + density
+alpha,sigma,beta,mu=1.5,1.0,0,0
 nb_sample=10000
 plot_grid=np.linspace(-5,5,1000)
 nb_bins=50
 plot_stable_density_histogram(alpha,sigma,beta,mu,nb_sample, plot_grid, nb_bins)
+
+# Characteristic function
+alpha,sigma,beta,mu=1.5,1.0,0.5,0
+grid=np.linspace(-10,10,1000)
+cf_stable = stable_characteristic_function(grid ,alpha ,sigma ,beta ,mu)
+
+plt.figure()
+plt.subplot(3,1,1)
+plt.plot(grid,np.real(cf_stable),label='real part')
+plt.gca().set_xticks([])
+plt.legend()
+
+plt.subplot(3,1,2)
+plt.plot(grid,np.imag(cf_stable),label='imag part',color='olive')
+plt.gca().set_xticks([])
+plt.legend()
+
+plt.subplot(3,1,3)
+plt.plot(grid,np.abs(cf_stable), label='modulus',color='black')
+plt.legend()
+plt.show()

@@ -9,7 +9,7 @@ Created on Wed Nov 27 23:09:53 2024
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from functions.CTS_distribution import CTS_density 
+from functions.CTS_distribution import CTS_density, CTS_generator_Bauemer_vectorial
 import sys
 
 
@@ -24,9 +24,9 @@ def plot_CTS_density(x_grid: np.ndarray, alpha:float, P:float, Q:float, A:float,
     plt.show()
     
 
-# x_grid=np.linspace(-10,10,1000)
-# alpha,P,Q,A,B=1.5,1,0.5,10,1
-# plot_CTS_density(x_grid,alpha,P,Q,A,B)
+x_grid=np.linspace(-10,10,1000)
+alpha,P,Q,A,B=1.5,1,0.5,10,1
+plot_CTS_density(x_grid,alpha,P,Q,A,B)
 
 
 # =============================================================================
@@ -116,5 +116,5 @@ plot_grid=np.linspace(-5,5,1000)
 c=5
 nb_sample=1000
 nb_bins=100
-alpha,P,Q,A,B=1.5,1,0.5,1,1
+alpha,P,Q,A,B=0.5,1,1,1,1
 plot_stable_density_histogram(alpha,P,Q,A,B,plot_grid,nb_sample,nb_bins,c)
