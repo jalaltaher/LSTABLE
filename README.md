@@ -181,13 +181,13 @@ trajectory_matrix=trajectory_CTS_generator(
 ```
 
 - **CTS Lévy process increments**:  
-  ![alpha=0.5](./figures/CTS_trajectories_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectories_alpha15.png)
+  ![alpha=0.5](./figures/CTS_increments_alpha05.png)
+  ![alpha=015](./figures/CTS_increments_alpha15.png)
   
   *This figure visualizes increments of CTS Lévy processes with index $\alpha=0.5,1.5$. *
   
 - **CTS Lévy process trajectories**:  
-  ![alpha=0.5](./figures/CTS_trajectories_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectories_alpha15.png)
+  ![alpha=0.5](./figures/CTS_trajectorie_alpha05.png)
+  ![alpha=015](./figures/CTS_trajectorie_alpha15.png)
   
   *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
