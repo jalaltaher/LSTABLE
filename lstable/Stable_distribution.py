@@ -203,4 +203,3 @@ def support_density(alpha:float,sigma:float,beta:float,mu:float):
    
     # General case
     return float("-inf"), float("inf")
-

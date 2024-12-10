@@ -358,8 +358,3 @@ def CTS_generator_Bauemer_vectorial(alpha: float ,P: float ,Q: float,A: float,B:
             print('estimated time left: {}h:{}m:{}s'.format(int(hours),int(minutes),int(seconds)))  
 
     return res
-
-
-
-
-

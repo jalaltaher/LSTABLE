@@ -49,4 +49,3 @@ def density_by_fourier_inversion(characteristic_function: np.ndarray,evaluation_
     integrand_matrix= np.exp(-np.dot(np.transpose(x_grid),integrand_matrix)*1j)*phi
     res=np.real(1/(2*pi)*simpson(integrand_matrix,dx=d_int,axis=1))
     return res*(res>=0)
-
