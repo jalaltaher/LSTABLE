@@ -10,6 +10,7 @@ Created on Mon Nov 25 20:43:55 2024
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
+from math import pi,log
 from functions.Stable_distribution import stable_to_levy_parameter
 
 
@@ -73,15 +74,44 @@ def trajectory_stable_Levy_process_generator(n: int, Delta: float,alpha:float, P
     return np.cumsum(increments_matrix_add0,axis=1)
 
     
-    
-    
-# n,Delta=1000,0.01
-# alpha,P,Q=1,1,1
-# drift=0
-# nb_sample=10
-# time_grid=np.linspace(0,n*Delta,n+1)
-# trajectory = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
-# plt.figure()
-# plt.plot(time_grid,trajectory.T)
-# plt.show()
+#Increments    
+n,Delta=1000,0.001
+P,Q=2,1
+drift=0
+
+
+alpha=0.5
+nb_sample=1
+time_grid=np.linspace(Delta,n*Delta,n)
+increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0]
+plt.figure()
+plt.plot(time_grid,increments)
+plt.show()
+
+alpha=1.5
+nb_sample=1
+time_grid=np.linspace(Delta,n*Delta,n)
+increments=increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)[0]
+plt.figure()
+plt.plot(time_grid,increments)
+plt.show()
+
+
+
+
+alpha=0.5
+nb_sample=10
+time_grid=np.linspace(0,n*Delta,n+1)
+trajectory = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
+plt.figure()
+plt.plot(time_grid,trajectory.T)
+plt.show()
+
+alpha=1.5
+nb_sample=10
+time_grid=np.linspace(0,n*Delta,n+1)
+trajectory = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, drift, nb_sample)
+plt.figure()
+plt.plot(time_grid,trajectory.T)
+plt.show()
     
