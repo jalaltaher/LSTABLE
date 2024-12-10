@@ -2,7 +2,7 @@
 
 LSTABLE is a Python library designed to sample trajectories and calculate theoretical features (density,characteristic function...) and display
 - Stable distributions.
-- $-\alpha$stable Lévy process.
+- $\alpha-$stable Lévy process.
 - Classical Tempered Stable (CTS) Lévy processes.
 ---
 
