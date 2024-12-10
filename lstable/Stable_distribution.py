@@ -10,8 +10,8 @@ import numpy as np
 from scipy.integrate import romb, quad, simpson
 import scipy.stats as st
 import matplotlib.pyplot as plt
-from math import cos, gamma, pi,log,tan,sin,floor,exp,ceil,sqrt
-from scipy.special import sici,gamma, gammainc, gammaincc,gammaincinv
+from math import cos, gamma, pi, log, tan, sin, floor, exp, ceil, sqrt
+from scipy.special import sici, gamma, gammainc, gammaincc, gammaincinv
 from scipy.integrate import quad
 import scipy.optimize as so
 import mpmath
@@ -20,14 +20,15 @@ from mpmath import gammainc
 import mpmath as mp
 
 
+# =============================================================================
+#
+# =============================================================================
 
-# =============================================================================
-# 
-# =============================================================================
 
 def float_or_int(parameter):
     """Check if a parameter is of type float or int."""
     return isinstance(parameter, (float, int))
+
 
 def valid_stable_parameters(alpha: float, sigma: float, beta: float, mu: float) -> bool:
     """
@@ -41,14 +42,14 @@ def valid_stable_parameters(alpha: float, sigma: float, beta: float, mu: float) 
     beta_requirement = float_or_int(beta) and (-1 <= beta <= 1)
     sigma_requirement = float_or_int(sigma) and (sigma > 0)
     mu_requirement = float_or_int(mu)
-    
+
     if not (0 < alpha < 2):
         raise ValueError("alpha must be in the range (0, 2).")
-    if alpha==2:
+    if alpha == 2:
         raise ValueError("Generate a gaussian random variable directly")
-    if not (-1<=beta <=1):
+    if not (-1 <= beta <= 1):
         raise ValueError("beta must be in the range [-1,1]")
-    if not (sigma>0):
+    if not (sigma > 0):
         raise ValueError("sigma must be positive")
 
     return alpha_requirement and beta_requirement and sigma_requirement and mu_requirement
@@ -56,7 +57,7 @@ def valid_stable_parameters(alpha: float, sigma: float, beta: float, mu: float) 
 
 def stable_to_levy_parameter(alpha: float, P: float, Q: float, drift: float):
     """
-    Converts the Lévy triplet parameters (alpha, P, Q, drift) to the stable distribution parameters 
+    Converts the Lévy triplet parameters (alpha, P, Q, drift) to the stable distribution parameters
     (alpha, sigma, beta, mu).
 
     Parameters
@@ -99,19 +100,17 @@ def stable_to_levy_parameter(alpha: float, P: float, Q: float, drift: float):
     return alpha, sigma, beta, mu
 
 
-
-
 def stable_distribution_generator(alpha: float, sigma: float, beta: float, mu: float, n_sample: int):
     """
     Generates a sample of size n_sample from a stable distribution S_alpha(sigma, beta, mu).
-    
+
     Parameters:
     - alpha: Stability parameter (0 < alpha < 2)
     - sigma: Scale parameter (sigma > 0)
     - beta: Skewness parameter (-1 <= beta <= 1)
     - mu: Location parameter (any real number)
     - n_sample: Number of samples to generate
-    
+
     Returns:
     - A list of N samples from the stable distribution.
     """
@@ -120,86 +119,88 @@ def stable_distribution_generator(alpha: float, sigma: float, beta: float, mu: f
         raise ValueError("Invalid parameters for the stable distribution.")
 
     # Generate N draws of Z ~ S_alpha(1, beta, 0)
-    z_vector = st.levy_stable.rvs(alpha, beta, size=n_sample)  
+    z_vector = st.levy_stable.rvs(alpha, beta, size=n_sample)
 
     # Rescale and shift Z to X
     if alpha != 1:
         return sigma * z_vector + mu  # When alpha != 1
     else:
         return sigma * z_vector + mu + (2 / pi) * beta * sigma * log(sigma)  # When alpha == 1
-    
 
-def convert_to_stable_and_sample(alpha: float,P:float,Q:float,drift: float, n_sample: int):
-    '''
-    Generate an n sample from a infinite divisible distribution of levy triplet (drift,0,nu) where 
+
+def convert_to_stable_and_sample(alpha: float, P: float, Q: float, drift: float, n_sample: int):
+    """
+    Generate an n sample from a infinite divisible distribution of levy triplet (drift,0,nu) where
     nu is the stable Levy measure of parameter alpha,P,Q
-    
-    '''
-    # Convert the Levy parameters
-    alpha,sigma,beta,mu = stable_to_levy_parameter(alpha, P, Q, drift)
-    return stable_distribution_generator(alpha,sigma,beta,mu,n_sample)
 
-def stable_density(grid ,alpha: float,sigma: float,beta: float,mu: float): 
-        """
-        Evaluates the density function of a stable distribution 
-        \( S_\alpha(\sigma, \beta, \mu) \) at the given grid points.        
-        """
-        if not valid_stable_parameters(alpha, sigma, beta, mu):
-            raise ValueError("Invalid parameters for the stable distribution.")
-            
-        g=st.levy_stable(alpha,beta).pdf # density of S_alpha(1,beta,0)
-        if alpha==1:
-            temp=-mu - 2/pi*beta*sigma*log(sigma)
-            shifted_grid=(grid-temp)/sigma
-            return 1/sigma* g(shifted_grid)
-        else:
-            shifted_grid=(grid-mu)/sigma
-            return 1/sigma*g((grid-mu)/sigma)
-        
-        
-def stable_characteristic_function(grid: np.ndarray ,alpha:float,sigma:float,beta:float,mu:float):
-    '''
-    Evaluates the characteristic function of a stable distribution 
+    """
+    # Convert the Levy parameters
+    alpha, sigma, beta, mu = stable_to_levy_parameter(alpha, P, Q, drift)
+    return stable_distribution_generator(alpha, sigma, beta, mu, n_sample)
+
+
+def stable_density(grid, alpha: float, sigma: float, beta: float, mu: float):
+    """
+    Evaluates the density function of a stable distribution
     \( S_\alpha(\sigma, \beta, \mu) \) at the given grid points.
-    
+    """
+    if not valid_stable_parameters(alpha, sigma, beta, mu):
+        raise ValueError("Invalid parameters for the stable distribution.")
+
+    g = st.levy_stable(alpha, beta).pdf  # density of S_alpha(1,beta,0)
+    if alpha == 1:
+        temp = -mu - 2 / pi * beta * sigma * log(sigma)
+        shifted_grid = (grid - temp) / sigma
+        return 1 / sigma * g(shifted_grid)
+    else:
+        shifted_grid = (grid - mu) / sigma
+        return 1 / sigma * g((grid - mu) / sigma)
+
+
+def stable_characteristic_function(grid: np.ndarray, alpha: float, sigma: float, beta: float, mu: float):
+    """
+    Evaluates the characteristic function of a stable distribution
+    \( S_\alpha(\sigma, \beta, \mu) \) at the given grid points.
+
     Returns:
     -------
     np.ndarray
-    An array of the same size as `grid`, containing the characteristic function 
+    An array of the same size as `grid`, containing the characteristic function
     values evaluated at the corresponding grid points.
-    '''
-    if not valid_stable_parameters(alpha, sigma, beta, mu):
-        raise ValueError("Invalid parameters for the stable distribution.")    
-    if alpha==1:
-        temp = -2/pi*np.log(np.abs(grid))
-    else:
-        temp = tan(pi*alpha/2)
-    return np.exp(1.j*grid*mu - np.abs(sigma*grid)**alpha*(1- 1.j*beta*np.sign(grid)*temp))
-
-def support_density(alpha:float,sigma:float,beta:float,mu:float):
-    ''' 
-   Determines the support of the probability density function of the 
-   \( S_\alpha(\sigma, \beta, \mu) \) stable distribution.
-   
-   Returns:
-   -------
-   tuple
-   A tuple (lower_bound, upper_bound) representing the lower and upper 
-   bounds of the support of the stable distribution.
-   - If alpha < 1 and beta = 1: [mu, +inf)
-   - If alpha < 1 and beta = -1: (-inf, mu]
-   - Otherwise: (-inf, +inf)
-
-    '''
+    """
     if not valid_stable_parameters(alpha, sigma, beta, mu):
         raise ValueError("Invalid parameters for the stable distribution.")
-    
+    if alpha == 1:
+        temp = -2 / pi * np.log(np.abs(grid))
+    else:
+        temp = tan(pi * alpha / 2)
+    return np.exp(1.0j * grid * mu - np.abs(sigma * grid) ** alpha * (1 - 1.0j * beta * np.sign(grid) * temp))
+
+
+def support_density(alpha: float, sigma: float, beta: float, mu: float):
+    """
+    Determines the support of the probability density function of the
+    \( S_\alpha(\sigma, \beta, \mu) \) stable distribution.
+
+    Returns:
+    -------
+    tuple
+    A tuple (lower_bound, upper_bound) representing the lower and upper
+    bounds of the support of the stable distribution.
+    - If alpha < 1 and beta = 1: [mu, +inf)
+    - If alpha < 1 and beta = -1: (-inf, mu]
+    - Otherwise: (-inf, +inf)
+
+    """
+    if not valid_stable_parameters(alpha, sigma, beta, mu):
+        raise ValueError("Invalid parameters for the stable distribution.")
+
     # Determine support bounds
     if alpha < 1:
         if beta == 1:
             return mu, float("inf")
         elif beta == -1:
             return float("-inf"), mu
-   
+
     # General case
     return float("-inf"), float("inf")
