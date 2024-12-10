@@ -103,5 +103,5 @@ cf_stable= stable_characteristic_function(
 ### $\alpha-$stable Lévy process
 
 The following example demonstrates how to sample an $\alpha-$stable Lévy process with triplet (drift,0,$\nu$) an where 
-$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|-x|^{-1-\alpha}$
+$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}$
 
