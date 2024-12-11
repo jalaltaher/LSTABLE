@@ -120,7 +120,7 @@ def plot_stable_density_histogram(
         density = CTS_density(plot_grid, alpha, P, Q, A, B, adaptive_bound=True)
         plt.plot(plot_grid, density, label="density")
     if histogram == True:
-        sample_array = CTS_generator_Bauemer_vectorial(alpha, P, Q, A, B, nb_sample, c, verbose=True)
+        sample_array = CTS_generator_Bauemer_vectorial(alpha, P, Q, A, B, nb_sample, c, loading_bar=False)
         values, bins = np.histogram(
             sample_array, density=True, bins=nb_bins
         )  # histogram_zoom(sample_array, minimum_bound,maximum_bound,nb_bins)

@@ -11,6 +11,7 @@ from math import cos, gamma, pi, log, tan, sin, floor, exp, ceil, sqrt
 from scipy.integrate import quad
 import time
 from scipy.optimize import brentq
+from tqdm import trange
 from .Stable_distribution import stable_distribution_generator
 from .Fourier_inversion import density_by_fourier_inversion
 
@@ -330,7 +331,7 @@ def CTS_generator_Bauemer(alpha: float, P: float, Q: float, A: float, B: float, 
 
 
 def CTS_generator_Bauemer_vectorial(
-    alpha: float, P: float, Q: float, A: float, B: float, n_sample: int, c: float = 0, verbose: bool = False
+    alpha: float, P: float, Q: float, A: float, B: float, n_sample: int, c: float = 0, loading_bar: bool = False
 ):
     """
     Vectorial version of the CTS generator
@@ -361,17 +362,13 @@ def CTS_generator_Bauemer_vectorial(
 
     """
     res = np.zeros(n_sample)
-    execution_time = 0
-    for i in range(n_sample):
-        start = time.time()
+    if loading_bar==True:
+        iterable=trange(n_sample)
+    else:
+        iterable=range(n_sample)
+    for i in iterable:
         res[i] = CTS_generator_Bauemer(alpha, P, Q, A, B, c)
-        end = time.time()
-        execution_time += end - start
-        if verbose:
-            mean_time_per_loop = execution_time / (i + 1)
-            expected_seconds_left = mean_time_per_loop * (n_sample - i + 1)
-            hours, minutes, seconds = seconds_to_hms(expected_seconds_left)
-            # print('sample: {}/{}'.format(i+1,n_sample),end='\r')
-            print("estimated time left: {}h:{}m:{}s".format(int(hours), int(minutes), int(seconds)))
 
     return res
+
+
