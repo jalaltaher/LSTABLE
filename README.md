@@ -193,7 +193,7 @@ trajectory_matrix=trajectory_CTS_generator(
     B,
     drift, 
     c,
-    verbose=False
+    loading_bar=False
 )
 ```
 
