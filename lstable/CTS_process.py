@@ -29,7 +29,7 @@ def increments_CTS_generator(
     B: float,
     drift: float,
     c: float = 0,
-    verbose: bool = False,
+    loading_bar: bool = False,
 ) -> np.ndarray:
     """
     Generates increments of a CTS process with drift.
@@ -46,10 +46,11 @@ def increments_CTS_generator(
     Returns:
         np.ndarray: Array of shape (n_increments,) representing the increments.
     """
-    increments_without_drift = CTS_generator_Bauemer_vectorial(
-        alpha, Delta * P, Delta * Q, A, B, n_increments, c, verbose
-    )
-    return increments_without_drift + Delta * drift
+    increments = np.zeros(n_increments+1)
+    increments[1:]=CTS_generator_Bauemer_vectorial(
+        alpha, Delta * P, Delta * Q, A, B, n_increments, c, loading_bar
+    ) + Delta * drift
+    return increments
 
 
 def trajectory_CTS_generator(
@@ -63,7 +64,7 @@ def trajectory_CTS_generator(
     B: float,
     drift: float,
     c: float = 0,
-    verbose: bool = False,
+    loading_bar: bool = False,
 ) -> np.ndarray:
     """
     Generates trajectories of a CTS process with drift.
@@ -76,7 +77,7 @@ def trajectory_CTS_generator(
         P, Q, A, B (float): Parameters of the CTS process.
         drift (float): Drift coefficient.
         c (float, optional): Additional parameter, default is 0.
-        verbose (bool, optional): Verbose output giving time remaining, default is False.
+        loading_bar (bool, optional): Verbose output giving time remaining, default is False.
 
     Returns:
         np.ndarray: Array of shape (n_trajectories, n_increments + 1)
@@ -84,16 +85,14 @@ def trajectory_CTS_generator(
     """
     increment_matrix = np.array(
         [
-            increments_CTS_generator(n_increments, Delta, alpha, P, Q, A, B, drift, c, verbose)
+            increments_CTS_generator(n_increments, Delta, alpha, P, Q, A, B, drift, c, loading_bar)
             for _ in range(n_trajectories)
         ]
     )
 
-    # Ensure the matrix starts with zeros (initial position)
-    increment_matrix_with_0 = np.hstack([np.zeros((n_trajectories, 1)), increment_matrix])
 
     # Compute the cumulative sum along increments
-    res = np.cumsum(increment_matrix_with_0, axis=1)
+    res = np.cumsum(increment_matrix, axis=1)
 
     # Return a 1D array if there's only one trajectory
     if n_trajectories == 1:
@@ -104,7 +103,7 @@ def trajectory_CTS_generator(
 # =============================================================================
 # Compound Poisson approximation
 # =============================================================================
-def upper_gamma(z: float or complex, x: np.ndarray):
+def upper_gamma(z: float, x: float):
     '''
     Upper Incomplete Gamma function using the library mpmath, which supports precise computations and complex values.
 
@@ -127,7 +126,7 @@ def upper_gamma(z: float or complex, x: np.ndarray):
     else:
         return res
         
-def lower_gamma(z: float or complex, x: np.ndarray):
+def lower_gamma(z: float, x: float):
     '''
     Lower Incomplete Gamma function using the library mpmath.
     Vectorize version with fixed z
@@ -144,7 +143,7 @@ def lower_gamma(z: float or complex, x: np.ndarray):
     np.ndarray
         Lower incomplete gamma function gamma(z, x) = int_{0}^x t^{z-1}e^{-t}dt that can be extended 
     '''
-    res = complex(gammainc(z,a=0,b=x,regularized=False ))
+    res = complex(gammainc(z,a=0,b=x,regularized=False))
     if np.imag(res)==0:
         return np.real(res)
     else:
@@ -360,7 +359,7 @@ def compound_poisson_approximation_direct_algorithm(Delta:float, drift:float,alp
     res= jumpsize_compound_poisson_approximation_vectorized(alpha,P,Q,A,B,delta,N_Delta)
     return np.sum(res)+Delta*gamma
     
-def compound_poisson_approximation_direct_algorithm_vectorized(nb_increments: int, Delta:float, drift:float,alpha:float ,P:float ,Q:float ,A:float ,B:float ,delta:float)-> np.ndarray:
+def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int, Delta:float, drift:float,alpha:float ,P:float ,Q:float ,A:float ,B:float ,delta:float)-> np.ndarray:
     """
     Vectorized version of compound_poisson_approximation_direct_algorithm
 
@@ -393,11 +392,11 @@ def compound_poisson_approximation_direct_algorithm_vectorized(nb_increments: in
 
     """
     res=[0]
-    res+= [compound_poisson_approximation_direct_algorithm(Delta,drift,alpha,P,Q,A,B,delta) for _ in range(nb_increments)]
+    res+= [compound_poisson_approximation_direct_algorithm(Delta,drift,alpha,P,Q,A,B,delta) for _ in range(n_increments)]
     return np.array(res)
     
 
-def compound_poisson_approximation_sorting_algorithm(nb_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float)->np.ndarray:
+def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float)->np.ndarray:
     '''
     Computes the increments at time Delta of the compound Poisson approximation of a tempered stable process 
     by compound Poisson sorting algorithm.
@@ -430,7 +429,7 @@ def compound_poisson_approximation_sorting_algorithm(nb_increments:float, Delta:
 
     '''
     
-    n=nb_increments
+    n=n_increments
     T=n*Delta #final time
     gamma = drift - drift_compensation(alpha,P,Q,A,B,delta) #drift term
     
@@ -485,13 +484,13 @@ def residual_variance(delta:float,alpha:float,P:float,Q:float, A:float, B:float)
     return  P*A**(alpha-2)*I1 + Q*B**(alpha-2)*I2
 
 
-def compound_poisson_gaussian_approximation_tempered_stable(nb_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float):
+def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float):
     '''
     compound poisson approximation and gaussian approximation of the residual error (small jumps)
 
     Parameters
     ----------
-    nb_increments : float
+    n_increments : float
         number of increments
     Delta : float
         sampling rate
@@ -517,10 +516,10 @@ def compound_poisson_gaussian_approximation_tempered_stable(nb_increments:float,
     np.ndarray
     array of size (nb_increment +1) of the cp approximation and gaussian approximation of the residual error.
     '''
-    cp_approx_incr =  compound_poisson_approximation_sorting_algorithm(nb_increments, Delta,drift ,alpha ,P,Q ,A, B ,delta)
-    res=np.zeros(nb_increments+1)
+    cp_approx_incr =  compound_poisson_approximation_sorting_algorithm(n_increments, Delta,drift ,alpha ,P,Q ,A, B ,delta)
+    res=np.zeros(n_increments+1)
     res_var= residual_variance(delta,alpha,P,Q,A,B)
-    brown_incr = sqrt(Delta)*st.norm().rvs(nb_increments)
+    brown_incr = sqrt(Delta)*st.norm().rvs(n_increments)
     res[1:] = cp_approx_incr[1:] + sqrt(res_var)* brown_incr
     return res
 
@@ -556,26 +555,82 @@ def criterion_gaussian_approximation(delta:float,alpha:float,P:float,Q:float, A:
 # General method function
 # =============================================================================
 
-# def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: float ,alpha: float,P:float ,Q:float ,A:float ,B:float ,c:float = 0, verbose:bool = False, method='bm'):
+def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: float ,alpha: float,P:float ,Q:float ,A:float ,B:float ,c:float = 0, loading_bar:bool = False, method='bm'):
+    '''
+    wrapper function for all the methods
+
+    Parameters
+    ----------
+    n_increments : float
+        number of increments
+    Delta : float
+        sampling rate
+    drift : float
+        drift term
+    alpha : float
+        stability index
+    P : float
+        positive jump parameter
+    Q : float
+        negative jump parameter
+    A : float
+        positive jump tempering parameter
+    B : float
+        negative jump tempering parameter
+    delta : float
+        truncation parameter
+        
+    c : float, optional
+        bauemer merschaert parameter. The default is 0 when alpha<=1.
+    verbose : bool, optional
+        DESCRIPTION. The default is False.
+    method : TYPE, optional
+        sampling method. The default is 'bm'.
+
+    Returns
+    -------
+    np.ndarray
+        increments of a tempered stable process.
+
+    '''
     
-    
-#     if method=='bm':
-#         return increments_CTS_generator(
-#             n_increments,
-#             Delta,
-#             alpha,
-#             P,
-#             Q,
-#             A,
-#             B,
-#             drift,
-#             c,
-#         )
-#     if method=='cpa':
-#         return compound_poisson_approximation_sorting_algorithm(
-#             nb_increments, Delta ,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float)
-#     if method=='cpga':
-#         return
+    if method=='bm':
+        return increments_CTS_generator(
+            n_increments,
+            Delta,
+            alpha,
+            P,
+            Q,
+            A,
+            B,
+            drift,
+            c,
+            loading_bar
+        )
+    elif method=='cpa':
+        return compound_poisson_approximation_sorting_algorithm(
+            n_increments,
+            Delta, 
+            drift,
+            alpha,
+            P,
+            Q,
+            A,
+            B,
+            delta
+        )
+    elif method=='cpga':
+        return compound_poisson_gaussian_approximation_tempered_stable(
+            n_increments,
+            Delta, 
+            drift,
+            alpha,
+            P,
+            Q,
+            A,
+            B,
+            delta
+        )
         
 
 # =============================================================================

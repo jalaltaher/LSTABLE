@@ -352,7 +352,7 @@ def CTS_generator_Bauemer_vectorial(
         Approximation parameter (default value is 0)
     n_sample: int
         number of samples
-    verbose: bool
+    loading_bar: bool
         additional informations on the computational time are given if True
 
     Returns
