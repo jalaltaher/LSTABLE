@@ -11,7 +11,12 @@ import scipy.stats as st
 from math import sqrt
 from mpmath import gammainc, inf
 
+from tqdm import trange
+
+
+
 from . import CTS_distribution
+from .CTS_distribution import *
 
 
 
@@ -98,6 +103,7 @@ def trajectory_CTS_generator(
     if n_trajectories == 1:
         return res[0]
     return res
+
 
 
 # =============================================================================
@@ -246,7 +252,8 @@ def jumpsize_compound_poisson_approximation(alpha: float,P:float,Q:float,A:float
     else:
         return  negative_jumpsize_compound_poisson_approximation(alpha,B,delta)
     
-def jumpsize_compound_poisson_approximation_vectorized(alpha: float,P:float,Q:float,A:float,B:float,delta:float,nb_jumps:int)->float:
+
+def jumpsize_compound_poisson_approximation_vectorized(alpha: float,P:float,Q:float,A:float,B:float,delta:float,nb_jumps:int,loading_bar:bool =False)->float:
     '''
     vectorized version of jumpsize of the compound Poisson approximation of a tempered stable process.
 
@@ -266,6 +273,8 @@ def jumpsize_compound_poisson_approximation_vectorized(alpha: float,P:float,Q:fl
         truncation parameter
     nb_jumps : int
         number of jumps
+    loading_bar: bool
+        additional informations on the computational time are given if True
 
     Returns
     -------
@@ -273,10 +282,14 @@ def jumpsize_compound_poisson_approximation_vectorized(alpha: float,P:float,Q:fl
         
         array of the size jumps of the compound Poisson approximation.
         
-    '''
-    
+'''
+
+    if loading_bar==True:
+        iterable=trange(nb_jumps)
+    else:
+        iterable=range(nb_jumps)
     res=np.zeros(nb_jumps)
-    for i in range(nb_jumps):
+    for i in iterable:
         res[i]=jumpsize_compound_poisson_approximation(alpha,P,Q,A,B,delta)
     return res
 
@@ -359,7 +372,9 @@ def compound_poisson_approximation_direct_algorithm(Delta:float, drift:float,alp
     res= jumpsize_compound_poisson_approximation_vectorized(alpha,P,Q,A,B,delta,N_Delta)
     return np.sum(res)+Delta*gamma
     
-def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int, Delta:float, drift:float,alpha:float ,P:float ,Q:float ,A:float ,B:float ,delta:float)-> np.ndarray:
+
+=======
+def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int, Delta:float, drift:float,alpha:float ,P:float ,Q:float ,A:float ,B:float ,delta:float,loading_bar:bool =False)-> np.ndarray:
     """
     Vectorized version of compound_poisson_approximation_direct_algorithm
 
@@ -382,6 +397,9 @@ def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int
         negative jump tempering parameter
     delta : float
         truncation parameter
+
+    loading_bar: bool
+        additional informations on the computational time are given if True
  
      Returns
     -------
@@ -391,12 +409,15 @@ def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int
 
 
     """
+
+   
     res=[0]
     res+= [compound_poisson_approximation_direct_algorithm(Delta,drift,alpha,P,Q,A,B,delta) for _ in range(n_increments)]
     return np.array(res)
     
 
-def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float)->np.ndarray:
+
+def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float,loading_bar:bool =False )->np.ndarray:
     '''
     Computes the increments at time Delta of the compound Poisson approximation of a tempered stable process 
     by compound Poisson sorting algorithm.
@@ -404,6 +425,9 @@ def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:f
 
     Parameters
     ----------
+
+    nb_increments: int
+        number of increments
     Delta : float
         time step
     drift : float
@@ -420,8 +444,10 @@ def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:f
         negative jump tempering parameter
     delta : float
         truncation parameter
-    nb_increment: int
-        number of increments
+
+    loading_bar: bool
+        additional informations on the computational time are given if True
+
      Returns
     -------
     res : np.ndarray
@@ -443,7 +469,8 @@ def compound_poisson_approximation_sorting_algorithm(n_increments:float, Delta:f
     #jump times
     U=T*st.uniform().rvs(N) #jump times
     
-    jump_sizes=jumpsize_compound_poisson_approximation_vectorized(alpha,P,Q,A,B,delta,N)
+
+    jump_sizes=jumpsize_compound_poisson_approximation_vectorized(alpha,P,Q,A,B,delta,N,loading_bar)
     res=np.zeros(n+1)
     for i in range(1,n+1):
         res[i] = np.sum(jump_sizes *(Delta*(i-1)<U)*(U<=Delta*i)) + Delta*gamma
@@ -484,7 +511,8 @@ def residual_variance(delta:float,alpha:float,P:float,Q:float, A:float, B:float)
     return  P*A**(alpha-2)*I1 + Q*B**(alpha-2)*I2
 
 
-def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float):
+=======
+def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float,loading_bar:bool =False):
     '''
     compound poisson approximation and gaussian approximation of the residual error (small jumps)
 
@@ -509,6 +537,8 @@ def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, 
         negative jump tempering parameter
     delta : float
         truncation parameter
+    loading_bar: bool
+        additional informations on the computational time are given if True
         
 
     Returns
@@ -516,7 +546,8 @@ def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, 
     np.ndarray
     array of size (nb_increment +1) of the cp approximation and gaussian approximation of the residual error.
     '''
-    cp_approx_incr =  compound_poisson_approximation_sorting_algorithm(n_increments, Delta,drift ,alpha ,P,Q ,A, B ,delta)
+
+    cp_approx_incr =  compound_poisson_approximation_sorting_algorithm(n_increments, Delta,drift ,alpha ,P,Q ,A, B ,delta,loading_bar)
     res=np.zeros(n_increments+1)
     res_var= residual_variance(delta,alpha,P,Q,A,B)
     brown_incr = sqrt(Delta)*st.norm().rvs(n_increments)
@@ -555,7 +586,9 @@ def criterion_gaussian_approximation(delta:float,alpha:float,P:float,Q:float, A:
 # General method function
 # =============================================================================
 
-def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: float ,alpha: float,P:float ,Q:float ,A:float ,B:float ,c:float = 0, loading_bar:bool = False, method='bm'):
+
+=======
+def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: float ,alpha: float,P:float ,Q:float ,A:float ,B:float ,delta:float, c:float = 0, loading_bar:bool = False, method='bm'):
     '''
     wrapper function for all the methods
 
@@ -582,7 +615,11 @@ def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: f
         
     c : float, optional
         bauemer merschaert parameter. The default is 0 when alpha<=1.
+<<<<<<< Updated upstream
     verbose : bool, optional
+=======
+    loading_bar : bool, optional
+>>>>>>> Stashed changes
         DESCRIPTION. The default is False.
     method : TYPE, optional
         sampling method. The default is 'bm'.
@@ -617,7 +654,8 @@ def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: f
             Q,
             A,
             B,
-            delta
+            delta,
+            loading_bar
         )
     elif method=='cpga':
         return compound_poisson_gaussian_approximation_tempered_stable(
@@ -629,7 +667,8 @@ def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: f
             Q,
             A,
             B,
-            delta
+            delta,
+            loading_bar
         )
         
 
@@ -637,3 +676,4 @@ def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: f
 # Goodness of fit tests for the increments
 # =============================================================================
 #To do
+

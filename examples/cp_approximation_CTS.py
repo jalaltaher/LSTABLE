@@ -82,7 +82,7 @@ from lstable.CTS_distribution import *
 alpha,P,Q,A,B=1.6,1,1,1,1
 delta=0.001
 drift=0.0
-n,Delta=1000,0.01
+n,Delta=100,0.01
 c=1
 
 grid=np.linspace(-3,3,1000)
@@ -103,12 +103,16 @@ plt.show()
 
 
 time_grid=np.linspace(0,n*Delta,n+1)
-increments_bm=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,c, method='bm')
-increments_cpa=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,c, method='cpa')
-increment_cpga=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,c, method='cpga')
+
+increments_bm=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,c,loading_bar=True, method='bm')
+increments_cpa=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,delta,c,loading_bar=True, method='cpa')
+increments_cpga=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,delta,c,loading_bar=True, method='cpga')
 
 plt.figure()
 plt.plot(time_grid,np.cumsum(increments_bm))
 plt.plot(time_grid,np.cumsum(increments_cpa))
 plt.plot(time_grid,np.cumsum(increments_cpga))
 plt.show()
+
+
+#Testing accuracy
