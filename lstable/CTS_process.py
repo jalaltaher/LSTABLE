@@ -615,11 +615,7 @@ def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: f
         
     c : float, optional
         bauemer merschaert parameter. The default is 0 when alpha<=1.
-<<<<<<< Updated upstream
-    verbose : bool, optional
-=======
     loading_bar : bool, optional
->>>>>>> Stashed changes
         DESCRIPTION. The default is False.
     method : TYPE, optional
         sampling method. The default is 'bm'.

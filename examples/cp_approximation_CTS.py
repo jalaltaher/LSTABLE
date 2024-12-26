@@ -79,10 +79,10 @@ from lstable.CTS_distribution import *
 
 
 #Testing all methods
-alpha,P,Q,A,B=1.6,1,1,1,1
-delta=0.001
-drift=0.0
-n,Delta=100,0.01
+alpha,P,Q,A,B=0.7,2,0,1,1
+delta=0.01
+drift=1
+n,Delta=1000,1
 c=1
 
 grid=np.linspace(-3,3,1000)
@@ -116,3 +116,48 @@ plt.show()
 
 
 #Testing accuracy
+def histogram_zoom(array: np.ndarray, minimum_bound: float, maximum_bound: float, nb_bins: int):
+    """
+    Computes bins and heights of a normalized histogram
+    of an array zooming on values that are inside
+    [infimum_bound, supremum_bound].
+
+    Parameters:
+        array: (np.ndarray) array of values
+        infimum_bound: (float) lower bound of the zoom box
+        supremum_bound: (float) upper bound of the zoom box
+        nb_bins: (int) number of bins for the histogram
+
+    Returns:
+        tuple: (values, bins)
+            values: Heights of the histogram bins in [infimum_bound, supremum_bound].
+            bins: Edges of the histogram bins in [infimum_bound, supremum_bound].
+    """
+    min_array = np.min(array)
+    max_array = np.max(array)
+    if min_array > minimum_bound:
+        raise ValueError("minimum bound not included in the support of the array")
+    if max_array < maximum_bound:
+        raise ValueError("maximum bound not included in the support of the array")
+
+    bins = np.linspace(minimum_bound, maximum_bound, nb_bins)
+    bins = np.concatenate(([min_array], bins, [max_array]))  # Adding the bounds as one range value
+    values, bins = np.histogram(array, bins=bins, density=True)
+    return values[1:-1], bins[1:-1]  # dropping the bins and values between the extremums and the desired bounds.
+
+
+plt.figure()
+plt.plot(grid,theoretical_density)
+plt.hist(increments_bm,density=True,bins=50)
+plt.plot()
+
+plt.figure()
+plt.plot(grid,theoretical_density)
+plt.hist(increments_cpa,density=True,bins=50)
+plt.plot()
+
+plt.figure()
+plt.plot(grid,theoretical_density)
+plt.hist(increments_cpga,density=True,bins=50)
+plt.plot()
+
