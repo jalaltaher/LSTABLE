@@ -150,11 +150,17 @@ trajectories = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, dr
   
   *This figure visualizes 10 trajectories of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
 
-
-### Classical Tempered Stable process via Bauemer-Merschaert algorithm.
-
+## Classical Tempered Stable process sampling
 The following example demonstrates how to sample a Classical Tempered Stable Lévy process with the triplet (drift,0,$\tilde{\nu}$) and where 
 $$\nu(dx) = Pe^{-Ax}x^{-1-\alpha} \mathbb{1}_{x>0} + Qe^{-Bx}|x|^{-1-\alpha} \mathbb{1}{x<0}$$
+
+| name  | method          | loading_bar |
+| :---------------: |:---------------:| -----:|
+| 'bm'  |  Bauemer-Merschaert     | displays progressive bar of n the number of increments  |
+| 'cpa'  | Compound Poisson approximation           |   number of jumps sampled |
+| 'cpag'  | Compound Poisson approximation with Gaussian approximation of the small jumps         |  number of sampled jump |
+
+** The Baumer-Merchaert is by far the most efficient algorithm it term of time an accuracy. Use it by default **
 
 ```python
 # Parameter
@@ -163,47 +169,76 @@ alpha = 0.5  # 1.5
 P,Q = 2,1
 A,B = 1,1
 drift = 0
-c = 1  # approximation parameter when $\alpha>=1$
-
-# increments generation
-increments= increments_CTS_generator(
-    n_increment,
-    Delta,
-    alpha, 
-    P,
-    Q,
-    A,
-    B,
-    drift, 
-    c,
-    verbose=False
-)
-
-
-#trajectory generation
-n_trajectories=5
-trajectory_matrix=trajectory_CTS_generator(
-    n_increment,
-    n_trajectories,
-    Delta,
-    alpha, 
-    P,
-    Q,
-    A,
-    B,
-    drift, 
-    c,
-    loading_bar=False
-)
+delta = 0.1  # jump size of the compound Poisson approximation
 ```
 
-- **CTS Lévy process increments**:  
+### Classical Tempered Stable process via Compound Poisson approximation and gaussian approximation of small jumps.
+
+The following example demonstrates using a Compound Poisson approximation (truncating the jump at a threshold $\delta$) and a Gaussian approximation of the small jumps (optional)
+
+```python
+# increments generation by Baumer_Merschaert method
+increments_bm=tempered_stable_process_increments(
+	n_increments ,
+	Delta ,drift
+	drift ,
+	alpha,
+	P,
+	Q,
+	A,
+	B,
+	delta,
+	loading_bar= False, 
+	method='bm')
+# increments generation by compound Poisson approximation
+increments_cpa=tempered_stable_process_increments(
+	n_increments ,
+	Delta ,drift
+	drift ,
+	alpha,
+	P,
+	Q,
+	A,
+	B,
+	delta,
+	loading_bar= False, 
+	method='cpa')
+
+
+# increments generation by compound Poisson approximation and gaussian approximation of the small jumps
+increments_cpga=tempered_stable_process_increments(
+	n_increments ,
+	Delta ,drift
+	drift ,
+	alpha,
+	P,
+	Q,
+	A,
+	B,
+	delta,
+	loading_bar= False, 
+	method='cpga')
+
+```
+- **CTS Lévy process increments with 'bm' method**:  
   ![alpha=0.5](./figures/CTS_increments_alpha05.png)
   ![alpha=015](./figures/CTS_increments_alpha15.png)
   
-  *This figure visualizes increments of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+  *This figure visualizes increments of CTS Lévy processes with index $\alpha=0.5,1.5$ using the 'bm' method which is the most efficient *
   
-- **CTS Lévy process trajectories**:  
+- **CTS Lévy process trajectories with 'bm' method**:  
+  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
+  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
+  
+  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+
+- **CTS Lévy process trajectories with 'bm' method**:  
+  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
+  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
+  
+  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+
+- **CTS Lévy process trajectories with 'bm' method**:  
   ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
   ![alpha=015](./figures/CTS_trajectory_alpha15.png)
   
