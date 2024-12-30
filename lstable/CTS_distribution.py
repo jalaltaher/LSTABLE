@@ -230,6 +230,8 @@ def CTS_density(
     # Adaptive grid generation if needed
     if adaptive_bound:
         integration_bound = adaptive_integration_bound_for_CTS_Fourier_inverse(alpha, P, Q, A, B)
+        if integration_bound==None:
+            raise ValueError("adaptive_bound not computed: modify threshold epsilon for the adpative bound or choose a empirical integration grid for the Fourier inverse transform")
         integration_grid = np.arange(-integration_bound, integration_bound, integration_step)
 
     # Ensure integration_grid is defined
@@ -252,20 +254,6 @@ def CTS_density(
 # =============================================================================
 # Bauemer algorithm
 # =============================================================================
-def seconds_to_hms(total_seconds):
-    """
-    Converts seconds into hours, minutes, and seconds.
-
-    Args:
-        total_seconds (int): Time in seconds.
-
-    Returns:
-        tuple: A tuple (hours, minutes, seconds).
-    """
-    hours = total_seconds // 3600
-    minutes = (total_seconds % 3600) // 60
-    seconds = total_seconds % 60
-    return hours, minutes, seconds
 
 
 def totally_skewed_CTS_generator_Bauemer(alpha: float, P: float, A: float, c: float = 0):
