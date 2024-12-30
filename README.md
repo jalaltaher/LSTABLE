@@ -6,6 +6,9 @@ LSTABLE is a Python library designed to sample trajectories calculate theoretica
 - Classical Tempered Stable (CTS) Lévy processes.
 ---
 
+## Mathematical references
+This library follows the review article: T.Jalal [**"Stable and tempered stable distributions and processes: an overview toward trajectory simulation"**](https://arxiv.org/abs/2412.06374). 
+
 ## Installation
 
 ```bash
@@ -155,7 +158,7 @@ The following example demonstrates how to sample a Classical Tempered Stable Lé
 $$\nu(dx) = Pe^{-Ax}x^{-1-\alpha} \mathbb{1}_{x>0} + Qe^{-Bx}|x|^{-1-\alpha} \mathbb{1}{x<0}$$
 
 | name  | method          | loading_bar |
-| :---------------: |:---------------:| -----:|
+| :---------------: |:---------------:|:-------------:|
 | 'bm'  |  Bauemer-Merschaert     | displays progressive bar of n the number of increments  |
 | 'cpa'  | Compound Poisson approximation           |   number of jumps sampled |
 | 'cpag'  | Compound Poisson approximation with Gaussian approximation of the small jumps         |  number of sampled jump |
@@ -233,16 +236,22 @@ increments_cpga=tempered_stable_process_increments(
   *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
 
 - **CTS Lévy process trajectories with 'bm' method**:  
-  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
+  ![alpha=0.8](./figures/CTS_increments_alpha08_three_methods.png)
+  ![alpha=015](./figures/CTS_increments_alpha15_three_methods.png)
   
-  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+  *This figure visualizes trajectories using the three methods for $n=1000$, $\Delta=0.1$ and $\alpha= 0.8, 1.5$ . *
 
-- **CTS Lévy process trajectories with 'bm' method**:  
-  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
+- **CTS Lévy process accuracy for alpha=0.8**:  
+  ![bm](./figures/CTS_trajectory_alpha08_accuracy_bl.png)
+  ![cpa](./figures/CTS_trajectory_alpha08_accuracy_cpa.png)
+  ![cpga](./figures/CTS_trajectory_alpha08_accuracy_cpga.png)
+
+- **CTS Lévy process accuracy for alpha=1.5**:  
+  ![bm](./figures/CTS_trajectory_alpha15_accuracy.png)
+  ![cpa](./figures/CTS_trajectory_alpha15_accuracy_cpa.png)
+  ![cpga](./figures/CTS_trajectory_alpha15_accuracy_cpga.png)
   
-  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
+  *This figure visualizes the accuracy of the sampling by plotting the histogram against the theoretical density of the algorithm. *
 
 ## Development
 
