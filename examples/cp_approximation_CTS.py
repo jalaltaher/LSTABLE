@@ -79,13 +79,13 @@ from lstable.CTS_distribution import *
 
 
 #Testing all methods
-alpha,P,Q,A,B=0.7,2,0,1,1
-delta=0.01
-drift=1
-n,Delta=1000,1
-c=1
+alpha,P,Q,A,B=1.5,2,1,1,1
+delta=0.05
+drift=0
+n,Delta=1000,0.01
+c=5
 
-grid=np.linspace(-3,3,1000)
+grid=np.linspace(-0.5,0.5,1000)
 
 theoretical_density= CTS_density(
     grid,
@@ -109,9 +109,10 @@ increments_cpa=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,de
 increments_cpga=tempered_stable_process_increments(n,Delta,drift,alpha,P,Q,A,B,delta,c,loading_bar=True, method='cpga')
 
 plt.figure()
-plt.plot(time_grid,np.cumsum(increments_bm))
-plt.plot(time_grid,np.cumsum(increments_cpa))
-plt.plot(time_grid,np.cumsum(increments_cpga))
+plt.plot(time_grid,np.cumsum(increments_bm),label='bm_algo')
+plt.plot(time_grid,np.cumsum(increments_cpa),label='cpa_algo')
+plt.plot(time_grid,np.cumsum(increments_cpga),label='cpga_algo')
+plt.legend()
 plt.show()
 
 
@@ -144,20 +145,31 @@ def histogram_zoom(array: np.ndarray, minimum_bound: float, maximum_bound: float
     bins = np.concatenate(([min_array], bins, [max_array]))  # Adding the bounds as one range value
     values, bins = np.histogram(array, bins=bins, density=True)
     return values[1:-1], bins[1:-1]  # dropping the bins and values between the extremums and the desired bounds.
+b=0.7
+val_bm,bins_bm= histogram_zoom(increments_bm, -b,b,50)
+val_cpa,bins_cpa= histogram_zoom(increments_cpa, -b, b, 50)
+val_cpga,bins_cpga= histogram_zoom(increments_cpga, -b, b, 50)
 
 
 plt.figure()
 plt.plot(grid,theoretical_density)
-plt.hist(increments_bm,density=True,bins=50)
+#plt.hist(increments_bm,density=True,bins=500,label='bm_algorithm')
+plt.stairs(val_bm,bins_bm,fill=True,label='bm_algorithm')
+#plt.xlim([-0.5,0.5])
+plt.legend()
 plt.plot()
 
 plt.figure()
 plt.plot(grid,theoretical_density)
-plt.hist(increments_cpa,density=True,bins=50)
+#plt.hist(increments_cpa,density=True,bins=100,label='cpa_algorithm')
+plt.stairs(val_cpa,bins_cpa,fill=True,label='cpa_algorithm')
+plt.legend()
 plt.plot()
 
 plt.figure()
 plt.plot(grid,theoretical_density)
-plt.hist(increments_cpga,density=True,bins=50)
+#plt.hist(increments_cpga,density=True,bins=50,label='cpga_algorithm')
+plt.stairs(val_cpga,bins_cpga,fill =True, label='cpga_algorithm')
+plt.legend()
 plt.plot()
 
