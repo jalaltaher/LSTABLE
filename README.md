@@ -232,13 +232,13 @@ increments_cpga=tempered_stable_process_increments(
   
   *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
 
-- **CTS Lévy process trajectories with 'bm' method**:  
+- **CTS Lévy process trajectories with 'cga' method**:  
   ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
   ![alpha=015](./figures/CTS_trajectory_alpha15.png)
   
   *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
 
-- **CTS Lévy process trajectories with 'bm' method**:  
+- **CTS Lévy process trajectories with 'cpga' method**:  
   ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
   ![alpha=015](./figures/CTS_trajectory_alpha15.png)
   
