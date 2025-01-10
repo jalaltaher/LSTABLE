@@ -2,7 +2,7 @@
 
 LSTABLE is a Python library designed to sample trajectories calculate theoretical features (density, characteristic function...), and display
 - Stable distributions.
-- $\alpha-$stable Lévy process.
+- $\alpha$-stable Lévy process.
 - Classical Tempered Stable (CTS) Lévy processes.
 ---
 
@@ -34,10 +34,10 @@ pip install numpy matplotlib scipy
 ```
 
 ## Examples
-
+$\alpha \beta \gamma \epsilon \mu \nu \chi$
 ### Stable Parameters 
 
-The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters (drift,0,$\nu$) where $\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}_{x<0}.$
+The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters (drift , 0 , $\nu$) where $\nu(dx) = Px^ {-1- \alpha} \mathbb{1}_ { x>0 } + Q |x|^ {-1 - \alpha} \mathbb{1}_ {x<0}$.
 
 ```python
 # Check the validity of stable parameters
@@ -103,10 +103,10 @@ cf_stable = stable_characteristic_function(
   *This figure visualizes the real, imaginary part and the modulus of the characteristic function of $S_\alpha(\sigma,\beta,\mu)$ with alpha=0.5,1.5. *
 
 
-### $\alpha-$stable Lévy process
+### $\alpha$-stable Lévy process
 
 The following example demonstrates how to sample an $\alpha-$stable Lévy process with triplet (drift,0,$\nu$) an where 
-$$\nu(dx) = Px^{-1-\alpha} \mathbb{1}_{x>0} + Q|x|^{-1-\alpha} \mathbb{1}{x<0}$$
+$$\nu(dx) = Px^ {-1- \alpha} \mathbb{1}_ { x>0 } + Q |x|^ {-1 - \alpha} \mathbb{1}_ {x<0}$$
 
 ```python
 # Lévy parameters
@@ -123,11 +123,11 @@ increments = increment_stable_levy_process_generator(n, Delta,alpha, P, Q, drift
 ```
 #### Output Figure
 
-- **$\alpha-$stable Lévy process increments**:  
+- **$\alpha$-stable Lévy process increments**:  
   ![alpha=0.5](./figures/stable_increments_alpha05.png)
   ![alpha=015](./figures/stable_increments_alpha15.png)
   
-  *This figure visualizes the increments of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
+  *This figure visualizes the increments of $\alpha-$stable Lévy processes with index $\alpha =0.5,1.5$. *
 
 
 
@@ -147,15 +147,15 @@ trajectories = trajectory_stable_Levy_process_generator(n, Delta,alpha, P, Q, dr
 
 #### Output Figure
 
-- **$\alpha-$stable Lévy process trajectories**:  
+- **$\alpha$-stable Lévy process trajectories**:  
   ![alpha=0.5](./figures/stable_trajectories_alpha05.png)
   ![alpha=015](./figures/stable_trajectories_alpha15.png)
   
-  *This figure visualizes 10 trajectories of $\alpha-$stable Lévy processes with index $\alpha=0.5,1.5$. *
+  *This figure visualizes 10 trajectories of $\alpha-$stable Lévy processes with index $\alpha =0.5,1.5$. *
 
 ## Classical Tempered Stable process sampling
 The following example demonstrates how to sample a Classical Tempered Stable Lévy process with the triplet (drift,0,$\tilde{\nu}$) and where 
-$$\nu(dx) = Pe^{-Ax}x^{-1-\alpha} \mathbb{1}_{x>0} + Qe^{-Bx}|x|^{-1-\alpha} \mathbb{1}{x<0}$$
+$$\nu(dx) = P e^ {-Ax}  x^ {-1- \alpha} \mathbb{1}_ { x>0 } + Q e^ {-Bx} |x|^ {-1 - \alpha} \mathbb{1}_ {x<0}$$
 
 | name  | method          | loading_bar |
 | :---------------: |:---------------:|:-------------:|
@@ -223,35 +223,12 @@ increments_cpga=tempered_stable_process_increments(
 	method='cpga')
 
 ```
-- **CTS Lévy process increments with 'bm' method**:  
-  ![alpha=0.5](./figures/CTS_increments_alpha05.png)
-  ![alpha=015](./figures/CTS_increments_alpha15.png)
-  
-  *This figure visualizes increments of CTS Lévy processes with index $\alpha=0.5,1.5$ using the 'bm' method which is the most efficient *
-  
-- **CTS Lévy process trajectories with 'bm' method**:  
-  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
-  
-  *This figure visualizes 5 trajectories of CTS Lévy processes with index $\alpha=0.5,1.5$. *
-
-<<<<<<< HEAD
-- **CTS Lévy process trajectories with 'cga' method**:  
-  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
-=======
 - **CTS Lévy process trajectories with 'bm' method**:  
   ![alpha=0.8](./figures/CTS_increments_alpha08_three_methods.png)
   ![alpha=015](./figures/CTS_increments_alpha15_three_methods.png)
->>>>>>> 5bf40637ef768db2d269655d45f68ef698d53eae
   
-  *This figure visualizes trajectories using the three methods for $n=1000$, $\Delta=0.1$ and $\alpha= 0.8, 1.5$ . *
-
-<<<<<<< HEAD
-- **CTS Lévy process trajectories with 'cpga' method**:  
-  ![alpha=0.5](./figures/CTS_trajectory_alpha05.png)
-  ![alpha=015](./figures/CTS_trajectory_alpha15.png)
-=======
+  *This figure visualizes trajectories using the three methods for $n=1000$, $\Delta =0.1$ and $\alpha = 0.8, 1.5$ . *
+  
 - **CTS Lévy process accuracy for alpha=0.8**:  
   ![bm](./figures/CTS_trajectory_alpha08_accuracy_bl.png)
   ![cpa](./figures/CTS_trajectory_alpha08_accuracy_cpa.png)
@@ -261,7 +238,6 @@ increments_cpga=tempered_stable_process_increments(
   ![bm](./figures/CTS_trajectory_alpha15_accuracy.png)
   ![cpa](./figures/CTS_trajectory_alpha15_accuracy_cpa.png)
   ![cpga](./figures/CTS_trajectory_alpha15_accuracy_cpga.png)
->>>>>>> 5bf40637ef768db2d269655d45f68ef698d53eae
   
   *This figure visualizes the accuracy of the sampling by plotting the histogram against the theoretical density of the algorithm. *
 
