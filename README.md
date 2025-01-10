@@ -34,7 +34,7 @@ pip install numpy matplotlib scipy
 ```
 
 ## Examples
-$\alpha \beta \gamma \epsilon \mu \nu \chi$
+
 ### Stable Parameters 
 
 The following examples demonstrate how to check the validity of the stable parameters and how to convert from the $1-$parameterization to the Lévy parameters (drift , 0 , $\nu$) where $\nu(dx) = Px^ {-1- \alpha} \mathbb{1}_ { x>0 } + Q |x|^ {-1 - \alpha} \mathbb{1}_ {x<0}$.
