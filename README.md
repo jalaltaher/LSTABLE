@@ -26,11 +26,13 @@ To use the Levy library effectively, ensure you have the following environment s
   - `numpy` (Numerical computations)
   - `matplotlib` (Visualizations)
   - `scipy` (Scientific computations)
+  - 'mpmath' (Incomplete Gamma functions)
+  - 'tqdm' (Loading bar)
 
 Install the required dependencies using the following command:
 
 ```bash
-pip install numpy matplotlib scipy
+pip install numpy matplotlib scipy mpmath tqdm
 ```
 
 ## Examples
