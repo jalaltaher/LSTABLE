@@ -7,7 +7,7 @@ LSTABLE is a Python library designed to sample trajectories calculate theoretica
 ---
 
 ## Mathematical references
-This library follows the review article: T.Jalal [**"Stable and tempered stable distributions and processes: an overview toward trajectory simulation"**](https://arxiv.org/abs/2412.06374). 
+This library is linked to the article: T.Jalal [**"Stable and tempered stable distributions and processes: an overview toward trajectory simulation"**](https://arxiv.org/abs/2412.06374). 
 
 ## Installation
 
