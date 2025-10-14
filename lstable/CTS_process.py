@@ -373,7 +373,7 @@ def compound_poisson_approximation_direct_algorithm(Delta:float, drift:float,alp
     return np.sum(res)+Delta*gamma
     
 
-=======
+
 def compound_poisson_approximation_direct_algorithm_vectorized(n_increments: int, Delta:float, drift:float,alpha:float ,P:float ,Q:float ,A:float ,B:float ,delta:float,loading_bar:bool =False)-> np.ndarray:
     """
     Vectorized version of compound_poisson_approximation_direct_algorithm
@@ -511,7 +511,6 @@ def residual_variance(delta:float,alpha:float,P:float,Q:float, A:float, B:float)
     return  P*A**(alpha-2)*I1 + Q*B**(alpha-2)*I2
 
 
-=======
 def compound_poisson_gaussian_approximation_tempered_stable(n_increments:float, Delta:float,drift:float ,alpha:float ,P:float,Q:float ,A:float, B:float ,delta:float,loading_bar:bool =False):
     '''
     compound poisson approximation and gaussian approximation of the residual error (small jumps)
@@ -587,7 +586,6 @@ def criterion_gaussian_approximation(delta:float,alpha:float,P:float,Q:float, A:
 # =============================================================================
 
 
-=======
 def tempered_stable_process_increments(n_increments: int ,Delta: float ,drift: float ,alpha: float,P:float ,Q:float ,A:float ,B:float ,delta:float, c:float = 0, loading_bar:bool = False, method='bm'):
     '''
     wrapper function for all the methods
